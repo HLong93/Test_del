@@ -1,0 +1,35 @@
+{
+  "original_file": "待处理知识库\\SRMS Support\\Unlock Batch解锁批次.docx",
+  "qa_pairs": [
+    {
+      "question": "相关问题",
+      "answer": "文档来源：Unlock Batch解锁批次\n\n输入批次编号，执行以上SQL就可以解锁\n先检查批次是否是Open状态。\nselect * from CMBTCH where cmbatchid = 'xxxxxx'\n--delete from MRILOCKS where REFERENCE = 'CMBATCH' and LOCKKEY = '2L717847'\n--update CMBTCH set HOLD = null, status = 'O' where CMBATCHID = '2L717847'",
+      "keywords": [
+        "解锁",
+        "输入批次编号",
+        "执行以上",
+        "Batch",
+        "状态",
+        "SQL",
+        "先检查批次是否是",
+        "就可以解锁"
+      ],
+      "source": "文档来源：Unlock Batch解锁批次",
+      "type": "text"
+    }
+  ],
+  "raw_content": {
+    "title": "Unlock Batch解锁批次",
+    "source_file": "待处理知识库\\SRMS Support\\Unlock Batch解锁批次.docx",
+    "type": "word",
+    "sections": [
+      {
+        "heading": "",
+        "content": "输入批次编号，执行以上SQL就可以解锁\n先检查批次是否是Open状态。\nselect * from CMBTCH where cmbatchid = 'xxxxxx'\n--delete from MRILOCKS where REFERENCE = 'CMBATCH' and LOCKKEY = '2L717847'\n--update CMBTCH set HOLD = null, status = 'O' where CMBATCHID = '2L717847'\n",
+        "tables": [],
+        "images": []
+      }
+    ],
+    "images": []
+  }
+}

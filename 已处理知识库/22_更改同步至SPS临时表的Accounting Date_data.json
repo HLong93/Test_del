@@ -1,0 +1,32 @@
+{
+  "original_file": "待处理知识库\\SRMS Support\\更改同步至SPS临时表的Accounting Date.docx",
+  "qa_pairs": [
+    {
+      "question": "相关问题",
+      "answer": "文档来源：更改同步至SPS临时表的Accounting Date\n\n查询需要更新的数据\nSELECT\n*\n--\tBUSINESS_UNIT,TRANSACTION_ID,TRANSACTION_LINE,ACCOUNTING_DT,FISCAL_YEAR,ACCOUNTING_PERIOD,JOURNAL_ID,JOURNAL_DATE,ACCOUNT,OPERATING_UNIT,CHARTFIELD1,MONETARY_AMOUNT,LINE_DESCR,CURRENCY_CD\nFROM\nPS_JGEN_ACCT_ENTRY(nolock)\nWHERE\nBUSINESS_UNIT = '50348'\n--and MONETARY_AMOUNT TJ 54020\nand LINE_DESCR = 'KA714920'\n执行更新\nupdate PS_JGEN_ACCT_ENTRY set ACCOUNTING_DT = '20241215' where BUSINESS_UNIT = '70155' and LINE_DESCR = 'SU718831'",
+      "keywords": [
+        "查询需要更新的数据",
+        "Journal",
+        "更新",
+        "执行更新",
+        "IE"
+      ],
+      "source": "文档来源：更改同步至SPS临时表的Accounting Date",
+      "type": "text"
+    }
+  ],
+  "raw_content": {
+    "title": "更改同步至SPS临时表的Accounting Date",
+    "source_file": "待处理知识库\\SRMS Support\\更改同步至SPS临时表的Accounting Date.docx",
+    "type": "word",
+    "sections": [
+      {
+        "heading": "",
+        "content": "查询需要更新的数据\nSELECT\n*\n--\tBUSINESS_UNIT,TRANSACTION_ID,TRANSACTION_LINE,ACCOUNTING_DT,FISCAL_YEAR,ACCOUNTING_PERIOD,JOURNAL_ID,JOURNAL_DATE,ACCOUNT,OPERATING_UNIT,CHARTFIELD1,MONETARY_AMOUNT,LINE_DESCR,CURRENCY_CD\nFROM\nPS_JGEN_ACCT_ENTRY(nolock)\nWHERE\nBUSINESS_UNIT = '50348'\n--and MONETARY_AMOUNT TJ 54020\nand LINE_DESCR = 'KA714920'\n执行更新\nupdate PS_JGEN_ACCT_ENTRY set ACCOUNTING_DT = '20241215' where BUSINESS_UNIT = '70155' and LINE_DESCR = 'SU718831'\n",
+        "tables": [],
+        "images": []
+      }
+    ],
+    "images": []
+  }
+}

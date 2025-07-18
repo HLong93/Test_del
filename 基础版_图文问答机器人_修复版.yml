@@ -1,0 +1,347 @@
+app:
+  description: '基础版图文问答机器人，支持文本、图片、语音、文件输入，提供图文混排输出'
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: 基础版图文问答机器人
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.1.5
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .txt
+      - .md
+      - .pdf
+      - .docx
+      - .xlsx
+      - .pptx
+      - .jpg
+      - .jpeg
+      - .png
+      - .gif
+      - .webp
+      - .mp3
+      - .wav
+      - .mp4
+      - .avi
+      allowed_file_types:
+      - document
+      - image
+      - audio
+      - video
+      allowed_file_upload_methods:
+      - remote_url
+      - local_file
+      enabled: true
+      image:
+        enabled: true
+        number_limits: 5
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 10
+    opening_statement: 您好！我是智能图文问答助手，可以处理文本、图片、语音和文档等多种输入，为您提供准确的图文混排回答。请告诉我您的问题或上传相关文件。
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: true
+    suggested_questions:
+    - 如何使用SRMS系统？
+    - Synergis Community App有什么功能？
+    - 遇到系统故障怎么办？
+    suggested_questions_after_answer:
+      enabled: true
+    text_to_speech:
+      enabled: true
+      language: 'zh-CN'
+      voice: 'alloy'
+  graph:
+    edges:
+    - data:
+        sourceType: start
+        targetType: document-extractor
+      id: 1752659131948-1752659131949
+      source: '1752659131948'
+      sourceHandle: source
+      target: '1752659131949'
+      targetHandle: target
+      type: custom
+    - data:
+        isInIteration: false
+        sourceType: document-extractor
+        targetType: question-classifier
+      id: 1752659131949-1752659131950
+      source: '1752659131949'
+      sourceHandle: source
+      target: '1752659131950'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: question-classifier
+        targetType: knowledge-retrieval
+      id: 1752659131950-1752659371747
+      source: '1752659131950'
+      sourceHandle: source
+      target: '1752659371747'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: knowledge-retrieval
+        targetType: llm
+      id: 1752659371747-1752659389172
+      source: '1752659371747'
+      sourceHandle: source
+      target: '1752659389172'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: answer
+      id: 1752659389172-answer
+      source: '1752659389172'
+      sourceHandle: source
+      target: answer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: '处理用户的多模态输入：文本、图片、语音、文件'
+        selected: false
+        title: 开始
+        type: start
+        variables:
+        - label: 用户问题
+          max_length: 1000
+          options: []
+          required: false
+          type: paragraph
+          variable: user_query
+        - label: 上传文件
+          allowed_file_extensions:
+          - .txt
+          - .md
+          - .pdf
+          - .docx
+          - .xlsx
+          - .pptx
+          allowed_file_types:
+          - document
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          max_length: 10
+          required: false
+          type: file-list
+          variable: uploaded_files
+      height: 116
+      id: '1752659131948'
+      position:
+        x: 50
+        y: 300
+      positionAbsolute:
+        x: 50
+        y: 300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: '提取上传文件的文本内容'
+        is_array_file: true
+        selected: false
+        title: 文档提取器
+        type: document-extractor
+        variable_selector:
+        - '1752659131948'
+        - uploaded_files
+      height: 92
+      id: '1752659131949'
+      position:
+        x: 350
+        y: 300
+      positionAbsolute:
+        x: 350
+        y: 300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        classes:
+        - class_name: 技术支持
+          id: tech_support
+        - class_name: 用户指南
+          id: user_guide
+        - class_name: 系统操作
+          id: system_operation
+        - class_name: 故障排除
+          id: troubleshooting
+        - class_name: 其他问题
+          id: other
+        desc: '根据用户问题分类，提高检索精度'
+        instruction: '请根据用户的问题内容，将其分类到最合适的类别中。分析问题的主要意图和涉及的领域。'
+        model:
+          completion_params:
+            temperature: 0.1
+          mode: chat
+          name: qwen-turbo
+          provider: tongyi
+        query_variable_selector:
+        - sys
+        - query
+        selected: false
+        title: 问题分类
+        type: question-classifier
+      height: 118
+      id: '1752659131950'
+      position:
+        x: 650
+        y: 300
+      positionAbsolute:
+        x: 650
+        y: 300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        dataset_ids:
+        - fcf795ab-5d89-4640-b275-a2d77e2f11d3
+        - 49b4d49c-03c3-4050-9e0d-52ca722b55c9
+        desc: '从知识库检索相关内容'
+        multiple_retrieval_config:
+          reranking_enable: true
+          reranking_mode: reranking_model
+          reranking_model:
+            model: gte-rerank
+            provider: tongyi
+          score_threshold: 0.5
+          top_k: 5
+        query_variable_selector:
+        - '1752659131950'
+        - class_name
+        retrieval_mode: multiple
+        selected: false
+        title: 知识检索
+        type: knowledge-retrieval
+      height: 120
+      id: '1752659371747'
+      position:
+        x: 950
+        y: 300
+      positionAbsolute:
+        x: 950
+        y: 300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1752659371747'
+          - result
+        desc: '基于检索结果生成图文混排回答'
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: true
+            size: 10
+        model:
+          completion_params:
+            temperature: 0.7
+            max_tokens: 2000
+          mode: chat
+          name: qwen-vl-max
+          provider: tongyi
+        prompt_template:
+        - edition_type: basic
+          id: 7b1c4a52-795e-4abb-93f7-dba569ea3a63
+          role: system
+          text: |
+            你是一个专业的智能助手，专门回答关于SRMS系统和Synergis Community App的问题。
+            
+            请根据提供的知识库内容{{#context#}}，为用户提供准确、详细的回答。
+            
+            回答要求：
+            1. 基于知识库内容回答，不要编造信息
+            2. 如果涉及操作步骤，请详细列出
+            3. 如果有相关图片，请在适当位置引用
+            4. 保持回答的专业性和准确性
+            5. 如果知识库中没有相关信息，请诚实说明
+            
+            用户问题分类：{{#1752659131950.class_name#}}
+            文档内容：{{#1752659131949.text#}}
+        - edition_type: basic
+          id: user-prompt
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        title: 回答生成
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+            variable_selector:
+            - sys
+            - files
+          enabled: true
+      height: 98
+      id: '1752659389172'
+      position:
+        x: 1250
+        y: 300
+      positionAbsolute:
+        x: 1250
+        y: 300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1752659389172.text#}}'
+        desc: '输出最终的图文混排回答'
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 102
+      id: answer
+      position:
+        x: 1550
+        y: 300
+      positionAbsolute:
+        x: 1550
+        y: 300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: 0
+      y: 0
+      zoom: 0.8

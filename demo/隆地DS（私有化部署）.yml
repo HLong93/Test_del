@@ -1,0 +1,1121 @@
+app:
+  description: 基于私有化部署的满血版DeepSeek-R1，支持联网检索。
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: 隆地DS（私有化部署）
+  use_icon_as_answer_icon: true
+kind: app
+version: 0.1.5
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions: []
+      allowed_file_types:
+      - image
+      - document
+      - audio
+      allowed_file_upload_methods:
+      - remote_url
+      - local_file
+      enabled: true
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: 我是隆地DS，很高兴见到你！我可以帮你写代码、读文件、写作各种创意内容，请把你的任务交给我吧~
+    retriever_resource:
+      enabled: false
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: true
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: true
+      language: zh-Hans
+      voice: sambert-zhinan-v1
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: if-else
+      id: 1741877276766-source-1741877353296-target
+      selected: false
+      source: '1741877276766'
+      sourceHandle: source
+      target: '1741877353296'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: document-extractor
+        targetType: llm
+      id: 1741877342252-source-1741877391796-target
+      selected: false
+      source: '1741877342252'
+      sourceHandle: source
+      target: '1741877391796'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: variable-aggregator
+      id: 1741877391796-source-1741919076086-target
+      selected: false
+      source: '1741877391796'
+      sourceHandle: source
+      target: '1741919076086'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: variable-aggregator
+        targetType: llm
+      id: 1741919076086-source-1741919192400-target
+      selected: false
+      source: '1741919076086'
+      sourceHandle: source
+      target: '1741919192400'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 1741919192400-source-1741916718865-target
+      selected: false
+      source: '1741919192400'
+      sourceHandle: source
+      target: '1741916718865'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: list-operator
+      id: 1741877353296-true-1741919458565-target
+      selected: false
+      source: '1741877353296'
+      sourceHandle: 'true'
+      target: '1741919458565'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: list-operator
+      id: 1741877353296-true-1741919492182-target
+      selected: false
+      source: '1741877353296'
+      sourceHandle: 'true'
+      target: '1741919492182'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: list-operator
+      id: 1741877353296-true-17419196219050-target
+      selected: false
+      source: '1741877353296'
+      sourceHandle: 'true'
+      target: '17419196219050'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: list-operator
+        targetType: if-else
+      id: 1741919492182-source-1742049767964-target
+      selected: false
+      source: '1741919492182'
+      sourceHandle: source
+      target: '1742049767964'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: document-extractor
+      id: 1742049767964-true-1741877342252-target
+      selected: false
+      source: '1742049767964'
+      sourceHandle: 'true'
+      target: '1741877342252'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: list-operator
+        targetType: if-else
+      id: 1741919458565-source-1742049806058-target
+      selected: false
+      source: '1741919458565'
+      sourceHandle: source
+      target: '1742049806058'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: llm
+      id: 1742049806058-true-1741918592065-target
+      selected: false
+      source: '1742049806058'
+      sourceHandle: 'true'
+      target: '1741918592065'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: list-operator
+        targetType: if-else
+      id: 17419196219050-source-1742049985222-target
+      selected: false
+      source: '17419196219050'
+      sourceHandle: source
+      target: '1742049985222'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: tool
+      id: 1742049985222-true-1741916947779-target
+      selected: false
+      source: '1742049985222'
+      sourceHandle: 'true'
+      target: '1741916947779'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: if-else
+      id: 1741877353296-false-1742798377887-target
+      selected: false
+      source: '1741877353296'
+      sourceHandle: 'false'
+      target: '1742798377887'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: tool
+      id: 1742798377887-true-1742798421718-target
+      selected: false
+      source: '1742798377887'
+      sourceHandle: 'true'
+      target: '1742798421718'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: tool
+        targetType: variable-aggregator
+      id: 1741916947779-source-1741919076086-target
+      selected: false
+      source: '1741916947779'
+      sourceHandle: source
+      target: '1741919076086'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: variable-aggregator
+      id: 1741918592065-source-1741919076086-target
+      selected: false
+      source: '1741918592065'
+      sourceHandle: source
+      target: '1741919076086'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: llm
+      id: 1742798377887-false-1742799506691-target
+      source: '1742798377887'
+      sourceHandle: 'false'
+      target: '1742799506691'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: answer
+      id: 1742799506691-source-1742799509974-target
+      selected: false
+      source: '1742799506691'
+      sourceHandle: source
+      target: '1742799509974'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: tool
+        targetType: llm
+      id: 1742798421718-source-1742799663691-target
+      source: '1742798421718'
+      sourceHandle: source
+      target: '1742799663691'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: answer
+      id: 1742799663691-source-1742799794954-target
+      source: '1742799663691'
+      sourceHandle: source
+      target: '1742799794954'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables:
+        - label: 联网搜索
+          max_length: 48
+          options:
+          - 否
+          - 是
+          required: true
+          type: select
+          variable: enable_network_access
+      height: 90
+      id: '1741877276766'
+      position:
+        x: 30
+        y: 263
+      positionAbsolute:
+        x: 30
+        y: 263
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        is_array_file: true
+        selected: false
+        title: 文档提取器
+        type: document-extractor
+        variable_selector:
+        - '1741919492182'
+        - result
+      height: 92
+      id: '1741877342252'
+      position:
+        x: 1246
+        y: 429
+      positionAbsolute:
+        x: 1246
+        y: 429
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: contains
+            id: dcdb1f7b-e9df-4416-ac5f-b12f36059b88
+            sub_variable_condition:
+              case_id: 70b531e9-f00f-4e34-83b1-aab21cdb8685
+              conditions: []
+              logical_operator: and
+            value: ''
+            varType: array[file]
+            variable_selector:
+            - sys
+            - files
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: 条件分支
+        type: if-else
+      height: 126
+      id: '1741877353296'
+      position:
+        x: 334
+        y: 263
+      positionAbsolute:
+        x: 334
+        y: 263
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        memory:
+          query_prompt_template: ''
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 50
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: qwen-max
+          provider: tongyi
+        prompt_template:
+        - id: efa9e311-e97f-4a1c-9c70-c38c7ce51adc
+          role: system
+          text: '{{#1741877342252.text#}}'
+        selected: false
+        title: LLM - 文档
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 98
+      id: '1741877391796'
+      position:
+        x: 1550
+        y: 412
+      positionAbsolute:
+        x: 1550
+        y: 412
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1741919192400.text#}}'
+        desc: ''
+        selected: true
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 103
+      id: '1741916718865'
+      position:
+        x: 2462
+        y: 561
+      positionAbsolute:
+        x: 2462
+        y: 561
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        is_team_authorization: true
+        output_schema: null
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: The audio file to be converted.
+            ja_JP: The audio file to be converted.
+            pt_BR: The audio file to be converted.
+            zh_Hans: 要转换的音频文件。
+          label:
+            en_US: Audio File
+            ja_JP: Audio File
+            pt_BR: Audio File
+            zh_Hans: 音频文件
+          llm_description: The audio file to be converted.
+          max: null
+          min: null
+          name: audio_file
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: file
+        - auto_generate: null
+          default: null
+          form: form
+          human_description:
+            en_US: All available ASR models. You can config model in the Model Provider
+              of Settings.
+            ja_JP: All available ASR models. You can config model in the Model Provider
+              of Settings.
+            pt_BR: All available ASR models. You can config model in the Model Provider
+              of Settings.
+            zh_Hans: 所有可用的 ASR 模型。你可以在设置中的模型供应商里配置。
+          label:
+            en_US: Model
+            ja_JP: Model
+            pt_BR: Model
+            zh_Hans: Model
+          llm_description: null
+          max: null
+          min: null
+          name: model
+          options:
+          - label:
+              en_US: FunAudioLLM/SenseVoiceSmall(langgenius/siliconflow/siliconflow)
+              ja_JP: FunAudioLLM/SenseVoiceSmall(langgenius/siliconflow/siliconflow)
+              pt_BR: FunAudioLLM/SenseVoiceSmall(langgenius/siliconflow/siliconflow)
+              zh_Hans: FunAudioLLM/SenseVoiceSmall(langgenius/siliconflow/siliconflow)
+            value: langgenius/siliconflow/siliconflow#FunAudioLLM/SenseVoiceSmall
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: select
+        params:
+          audio_file: ''
+          model: ''
+        provider_id: audio
+        provider_name: audio
+        provider_type: builtin
+        selected: false
+        title: Speech To Text
+        tool_configurations:
+          model: langgenius/siliconflow/siliconflow#FunAudioLLM/SenseVoiceSmall
+        tool_label: Speech To Text
+        tool_name: asr
+        tool_parameters:
+          audio_file:
+            type: variable
+            value:
+            - '17419196219050'
+            - result
+        type: tool
+      height: 90
+      id: '1741916947779'
+      position:
+        x: 1550
+        y: 565
+      positionAbsolute:
+        x: 1550
+        y: 565
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        memory:
+          query_prompt_template: ''
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 50
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: qwen-vl-max
+          provider: tongyi
+        prompt_template:
+        - id: 1b723da6-ac64-4244-b53e-91e18e10a516
+          role: system
+          text: ''
+        selected: false
+        title: 图片理解
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+            variable_selector:
+            - '1741919458565'
+            - result
+          enabled: true
+      height: 98
+      id: '1741918592065'
+      position:
+        x: 1550
+        y: 263
+      positionAbsolute:
+        x: 1550
+        y: 263
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        advanced_settings:
+          group_enabled: false
+          groups:
+          - groupId: 9ee0dc6a-de70-4302-bfc4-48e4ab21d365
+            group_name: Group1
+            output_type: string
+            variables:
+            - - '1741916870458'
+              - text
+            - - '1741916710009'
+              - text
+            - - '1741877391796'
+              - text
+            - - llm
+              - text
+        desc: ''
+        output_type: string
+        selected: false
+        title: 变量聚合器
+        type: variable-aggregator
+        variables:
+        - - '1741877391796'
+          - text
+        - - '1741918592065'
+          - text
+        - - '1741916947779'
+          - text
+      height: 152
+      id: '1741919076086'
+      position:
+        x: 1854
+        y: 561
+      positionAbsolute:
+        x: 1854
+        y: 561
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1741919076086'
+          - output
+        desc: ''
+        memory:
+          query_prompt_template: ''
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 50
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: DeepSeek-R1
+          provider: openai_api_compatible
+        prompt_template:
+        - id: 58918956-0eaf-470a-b82b-dd4dd97f2f11
+          role: system
+          text: 总结并理解{{#context#}}的内容，对用户进行回复。
+        selected: false
+        title: 最后总结
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 98
+      id: '1741919192400'
+      position:
+        x: 2158
+        y: 561
+      positionAbsolute:
+        x: 2158
+        y: 561
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        extract_by:
+          enabled: false
+          serial: '1'
+        filter_by:
+          conditions:
+          - comparison_operator: in
+            key: type
+            value:
+            - image
+          enabled: true
+        item_var_type: file
+        limit:
+          enabled: false
+          size: 10
+        order_by:
+          enabled: false
+          key: ''
+          value: asc
+        selected: false
+        title: 筛选图片
+        type: list-operator
+        var_type: array[file]
+        variable:
+        - sys
+        - files
+      height: 92
+      id: '1741919458565'
+      position:
+        x: 942
+        y: 263
+      positionAbsolute:
+        x: 942
+        y: 263
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        extract_by:
+          enabled: false
+          serial: '1'
+        filter_by:
+          conditions:
+          - comparison_operator: in
+            key: type
+            value:
+            - document
+          enabled: true
+        item_var_type: file
+        limit:
+          enabled: false
+          size: 10
+        order_by:
+          enabled: false
+          key: ''
+          value: asc
+        selected: false
+        title: 筛选文档
+        type: list-operator
+        var_type: array[file]
+        variable:
+        - sys
+        - files
+      height: 92
+      id: '1741919492182'
+      position:
+        x: 638
+        y: 412
+      positionAbsolute:
+        x: 638
+        y: 412
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        extract_by:
+          enabled: false
+          serial: '1'
+        filter_by:
+          conditions:
+          - comparison_operator: in
+            key: type
+            value:
+            - audio
+          enabled: true
+        item_var_type: file
+        limit:
+          enabled: false
+          size: 10
+        order_by:
+          enabled: false
+          key: ''
+          value: asc
+        selected: false
+        title: 筛选音频
+        type: list-operator
+        var_type: array[file]
+        variable:
+        - sys
+        - files
+      height: 92
+      id: '17419196219050'
+      position:
+        x: 942
+        y: 561
+      positionAbsolute:
+        x: 942
+        y: 561
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: exists
+            id: d0b78ee4-9155-4522-8960-f131fe511b73
+            sub_variable_condition:
+              case_id: e1e0c910-00a3-41b6-962f-c95a8145ef05
+              conditions:
+              - comparison_operator: not empty
+                id: e847cd9c-77b5-41c6-b0b9-a0b00dc41e29
+                key: url
+                value: ''
+                varType: string
+              logical_operator: and
+            value: ''
+            varType: file
+            variable_selector:
+            - '1741919492182'
+            - first_record
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: 文档判断
+        type: if-else
+      height: 126
+      id: '1742049767964'
+      position:
+        x: 942
+        y: 395
+      positionAbsolute:
+        x: 942
+        y: 395
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: exists
+            id: c945c1c7-699b-40e5-a362-6cf7cc517d81
+            sub_variable_condition:
+              case_id: b06415f0-16af-42b7-b4d1-41b14c1c77ee
+              conditions:
+              - comparison_operator: not empty
+                id: 0460ce1c-58e3-47dd-a49e-23c5b59b8b5a
+                key: url
+                value: ''
+                varType: string
+              logical_operator: and
+            value: ''
+            varType: file
+            variable_selector:
+            - '1741919458565'
+            - first_record
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: 图片判断
+        type: if-else
+      height: 126
+      id: '1742049806058'
+      position:
+        x: 1246
+        y: 263
+      positionAbsolute:
+        x: 1246
+        y: 263
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: exists
+            id: c998878a-2229-4315-bc46-90e7d610e3c1
+            sub_variable_condition:
+              case_id: 12a6a813-cbeb-4ecf-a01d-4416406135b5
+              conditions:
+              - comparison_operator: not empty
+                id: 3a1ea04d-2573-4ed1-addd-4343789b9618
+                key: url
+                value: ''
+                varType: string
+              logical_operator: and
+            value: ''
+            varType: file
+            variable_selector:
+            - '17419196219050'
+            - first_record
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: 音频判断
+        type: if-else
+      height: 126
+      id: '1742049985222'
+      position:
+        x: 1246
+        y: 561
+      positionAbsolute:
+        x: 1246
+        y: 561
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: is
+            id: 4a1b2668-e047-4216-9995-7f8c88888c7e
+            value: 是
+            varType: string
+            variable_selector:
+            - '1741877276766'
+            - enable_network_access
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: 判断是否联网搜索
+        type: if-else
+      height: 126
+      id: '1742798377887'
+      position:
+        x: 1246
+        y: 727
+      positionAbsolute:
+        x: 1246
+        y: 727
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        provider_id: searchapi
+        provider_name: searchapi
+        provider_type: builtin
+        selected: false
+        title: 联网搜索
+        tool_configurations:
+          gl: CN
+          hl: zh-cn
+          result_type: text
+        tool_label: Google Search API
+        tool_name: google_search_api
+        tool_parameters:
+          google_domain:
+            type: mixed
+            value: ''
+          query:
+            type: mixed
+            value: '{{#sys.query#}}'
+        type: tool
+      height: 142
+      id: '1742798421718'
+      position:
+        x: 1550
+        y: 859.2857142857142
+      positionAbsolute:
+        x: 1550
+        y: 859.2857142857142
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: DeepSeek-R1
+          provider: openai_api_compatible
+        prompt_template:
+        - id: 02002b93-0154-4486-a140-7f78fd9b00be
+          role: system
+          text: ''
+        - id: fb546daf-a608-49a4-b808-e790882fa4f5
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        title: LLM 4
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 98
+      id: '1742799506691'
+      position:
+        x: 1550
+        y: 1083.142857142857
+      positionAbsolute:
+        x: 1550
+        y: 1083.142857142857
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1742799506691.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复 2
+        type: answer
+        variables: []
+      height: 103
+      id: '1742799509974'
+      position:
+        x: 2462
+        y: 1083.142857142857
+      positionAbsolute:
+        x: 2462
+        y: 1083.142857142857
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 50
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: DeepSeek-R1
+          provider: openai_api_compatible
+        prompt_template:
+        - id: 32b7dd20-45bf-4629-a75f-1ac8b42947e9
+          role: system
+          text: 整理并理解搜索结果：{{#1742798421718.text#}}，然后回复用户
+        - id: 435ad476-b1b6-4f66-a101-89581958e3d3
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        title: LLM 5
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 98
+      id: '1742799663691'
+      position:
+        x: 2067.149431144834
+        y: 859.2857142857142
+      positionAbsolute:
+        x: 2067.149431144834
+        y: 859.2857142857142
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1742799663691.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复 3
+        type: answer
+        variables: []
+      height: 103
+      id: '1742799794954'
+      position:
+        x: 2462
+        y: 859.2857142857142
+      positionAbsolute:
+        x: 2462
+        y: 859.2857142857142
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: -344.950179275693
+      y: 105.74794501982535
+      zoom: 0.4678420379275083

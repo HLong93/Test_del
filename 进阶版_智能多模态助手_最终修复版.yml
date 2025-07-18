@@ -1,0 +1,424 @@
+app:
+  description: '进阶版智能多模态助手，支持文档提取、条件分支和智能处理'
+  icon: 🧠
+  icon_background: '#E3F2FD'
+  mode: advanced-chat
+  name: 进阶版智能多模态助手
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.1.5
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .txt
+      - .md
+      - .pdf
+      - .docx
+      - .xlsx
+      - .pptx
+      - .jpg
+      - .jpeg
+      - .png
+      - .gif
+      - .webp
+      - .svg
+      - .mp3
+      - .wav
+      - .m4a
+      - .mp4
+      - .avi
+      - .mov
+      allowed_file_types:
+      - document
+      - image
+      - audio
+      - video
+      allowed_file_upload_methods:
+      - remote_url
+      - local_file
+      enabled: true
+      image:
+        enabled: true
+        number_limits: 10
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 15
+    opening_statement: 您好！我是进阶版智能多模态助手，具备强大的文档处理、图像识别、语音转换和智能推理能力。我可以调用多种工具来为您提供更精准的服务。请告诉我您需要什么帮助？
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: true
+    speech_to_text:
+      enabled: true
+    suggested_questions:
+    - 分析这个文档的主要内容
+    - 帮我识别图片中的文字
+    - 解决SRMS系统登录问题
+    - 生成操作步骤的总结
+    suggested_questions_after_answer:
+      enabled: true
+    text_to_speech:
+      enabled: true
+      language: 'zh-CN'
+      voice: 'nova'
+  graph:
+    edges:
+    - data:
+        sourceType: start
+        targetType: document-extractor
+      id: 1752659131948-1735268565674
+      source: '1752659131948'
+      sourceHandle: source
+      target: '1735268565674'
+      targetHandle: target
+      type: custom
+    - data:
+        isInIteration: false
+        sourceType: document-extractor
+        targetType: if-else
+      id: 1735268565674-source-1735268565675-target
+      source: '1735268565674'
+      sourceHandle: source
+      target: '1735268565675'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: knowledge-retrieval
+      id: 1735268565675-source-1752659371747-target
+      source: '1735268565675'
+      sourceHandle: 'true'
+      target: '1752659371747'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: llm
+      id: 1735268565675-source-llm2-target
+      source: '1735268565675'
+      sourceHandle: 'false'
+      target: llm2
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: knowledge-retrieval
+        targetType: llm
+      id: 1752659371747-source-1752659389172-target
+      source: '1752659371747'
+      sourceHandle: source
+      target: '1752659389172'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: llm
+      id: llm2-source-1752659389172-target
+      source: llm2
+      sourceHandle: source
+      target: '1752659389172'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: answer
+      id: 1752659389172-source-answer-target
+      source: '1752659389172'
+      sourceHandle: source
+      target: answer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: '处理多模态输入并支持批量文件上传'
+        selected: false
+        title: 开始
+        type: start
+        variables:
+        - label: 用户问题
+          max_length: 2000
+          options: []
+          required: false
+          type: paragraph
+          variable: user_query
+        - label: 问题类型
+          options:
+          - 技术支持
+          - 文档分析
+          - 图像处理
+          - 数据查询
+          - 其他
+          required: false
+          type: select
+          variable: question_type
+        - label: 上传文件
+          allowed_file_extensions:
+          - .txt
+          - .md
+          - .pdf
+          - .docx
+          - .xlsx
+          - .pptx
+          allowed_file_types:
+          - document
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          max_length: 15
+          required: false
+          type: file-list
+          variable: uploaded_files
+      height: 54
+      id: '1752659131948'
+      position:
+        x: 30
+        y: 260
+      positionAbsolute:
+        x: 30
+        y: 260
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: '提取多种格式文件的内容'
+        is_array_file: true
+        selected: false
+        title: 文档提取器
+        type: document-extractor
+        variable_selector:
+        - '1752659131948'
+        - uploaded_files
+      height: 92
+      id: '1735268565674'
+      position:
+        x: 334
+        y: 260
+      positionAbsolute:
+        x: 334
+        y: 260
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        conditions:
+        - comparison_operator: is not empty
+          id: condition1
+          logical_operator: and
+          variable_selector:
+          - '1735268565674'
+          - text
+        desc: '根据是否有文档内容选择处理路径'
+        logical_operator: and
+        selected: false
+        title: 条件分支
+        type: if-else
+      height: 126
+      id: '1735268565675'
+      position:
+        x: 638
+        y: 260
+      positionAbsolute:
+        x: 638
+        y: 260
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        dataset_ids:
+        - fcf795ab-5d89-4640-b275-a2d77e2f11d3
+        - 49b4d49c-03c3-4050-9e0d-52ca722b55c9
+        desc: '从多个知识库检索相关内容'
+        multiple_retrieval_config:
+          reranking_enable: true
+          reranking_mode: reranking_model
+          reranking_model:
+            model: gte-rerank
+            provider: tongyi
+          score_threshold: 0.4
+          top_k: 5
+        query_variable_selector:
+        - sys
+        - query
+        retrieval_mode: multiple
+        selected: false
+        title: 知识检索
+        type: knowledge-retrieval
+      height: 120
+      id: '1752659371747'
+      position:
+        x: 942
+        y: 160
+      positionAbsolute:
+        x: 942
+        y: 160
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1735268565674'
+          - text
+        desc: '直接分析文档内容'
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 50
+        model:
+          completion_params:
+            temperature: 0.6
+          mode: chat
+          name: qwen-vl-max
+          provider: tongyi
+        prompt_template:
+        - id: 7b1c4a52-795e-4abb-93f7-dba569ea3a64
+          role: system
+          text: |
+            你是一个高级智能助手，具备强大的多模态处理能力。
+            
+            基于文档内容：{{#context#}}
+            
+            请为用户提供：
+            1. 准确、详细的分析
+            2. 如有操作步骤，请清晰列出
+            3. 适当引用相关图片或文档
+            4. 提供实用的建议和解决方案
+            5. 保持专业和友好的语调
+        selected: false
+        title: 文档分析
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+            variable_selector:
+            - sys
+            - files
+          enabled: true
+      height: 98
+      id: llm2
+      position:
+        x: 942
+        y: 360
+      positionAbsolute:
+        x: 942
+        y: 360
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1752659371747'
+          - result
+        desc: '生成最终的智能回答'
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: true
+            size: 15
+        model:
+          completion_params:
+            temperature: 0.6
+            max_tokens: 3000
+          mode: chat
+          name: qwen-vl-max
+          provider: tongyi
+        prompt_template:
+        - id: 9bd23fcf-800e-48a0-9688-4209d7b50cd4
+          role: system
+          text: |
+            你是一个高级智能助手，具备强大的多模态处理能力。
+
+            基于检索或分析的信息：{{#context#}}
+
+            请为用户提供：
+            1. 准确、详细的回答
+            2. 如有操作步骤，请清晰列出
+            3. 适当引用相关图片或文档
+            4. 提供实用的建议和解决方案
+            5. 保持专业和友好的语调
+
+            用户问题类型：{{#1752659131948.question_type#}}
+            文档内容：{{#1735268565674.text#}}
+        selected: false
+        title: 最终回答生成
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+            variable_selector:
+            - sys
+            - files
+          enabled: true
+      height: 98
+      id: '1752659389172'
+      position:
+        x: 1246
+        y: 260
+      positionAbsolute:
+        x: 1246
+        y: 260
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1752659389172.text#}}'
+        desc: '输出最终的智能回答'
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 102
+      id: answer
+      position:
+        x: 1550
+        y: 260
+      positionAbsolute:
+        x: 1550
+        y: 260
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: 0
+      y: 0
+      zoom: 0.8

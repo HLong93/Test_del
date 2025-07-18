@@ -1,0 +1,677 @@
+app:
+  description: ''
+  icon: 📂
+  icon_background: '#FEF7C3'
+  mode: advanced-chat
+  name: 合同解析
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.1.5
+workflow:
+  conversation_variables:
+  - description: 'Text to be translated. '
+    id: e520bb9f-da6f-49a3-9da6-a3c74f1d68d6
+    name: text
+    selector:
+    - conversation
+    - text
+    value: ''
+    value_type: string
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: false
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInLoop: false
+        sourceType: start
+        targetType: document-extractor
+      id: 1727234055352-source-1727235420145-target
+      selected: false
+      source: '1727234055352'
+      sourceHandle: source
+      target: '1727235420145'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: document-extractor
+        targetType: assigner
+      id: 1727235420145-source-1742785731675-target
+      selected: false
+      source: '1727235420145'
+      sourceHandle: source
+      target: '1742785731675'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: assigner
+        targetType: if-else
+      id: 1742785731675-source-1743572188745-target
+      selected: false
+      source: '1742785731675'
+      sourceHandle: source
+      target: '1743572188745'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: code
+      id: 17435722334800-source-1743127987774-target
+      selected: false
+      source: '17435722334800'
+      sourceHandle: source
+      target: '1743127987774'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: variable-aggregator
+      id: 1743127987774-source-1743574627881-target
+      source: '1743127987774'
+      sourceHandle: source
+      target: '1743574627881'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: variable-aggregator
+        targetType: code
+      id: 1743574627881-source-1743142066025-target
+      source: '1743574627881'
+      sourceHandle: source
+      target: '1743142066025'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: code
+      id: 1743142066025-source-1743660332041-target
+      source: '1743142066025'
+      sourceHandle: source
+      target: '1743660332041'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: answer
+      id: 1743660332041-source-1727244764225-target
+      source: '1743660332041'
+      sourceHandle: source
+      target: '1727244764225'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: 1742975365645-source-1743663970298-target
+      source: '1742975365645'
+      sourceHandle: source
+      target: '1743663970298'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: variable-aggregator
+      id: 1743663970298-source-1743574627881-target
+      source: '1743663970298'
+      sourceHandle: source
+      target: '1743574627881'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: llm
+      id: 1743572188745-true-1742975365645-target
+      source: '1743572188745'
+      sourceHandle: 'true'
+      target: '1742975365645'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: llm
+      id: 1743572188745-false-17435722334800-target
+      source: '1743572188745'
+      sourceHandle: 'false'
+      target: '17435722334800'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables:
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - document
+          allowed_file_upload_methods:
+          - local_file
+          label: 上传文件
+          max_length: 5
+          options: []
+          required: true
+          type: file
+          variable: file
+        - label: 模型类型
+          max_length: 2
+          options: []
+          required: false
+          type: text-input
+          variable: llm_type
+      height: 116
+      id: '1727234055352'
+      position:
+        x: 163.86260281761838
+        y: 286.5
+      positionAbsolute:
+        x: 163.86260281761838
+        y: 286.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        is_array_file: false
+        selected: false
+        title: 文档提取
+        type: document-extractor
+        variable_selector:
+        - '1727234055352'
+        - file
+      height: 92
+      id: '1727235420145'
+      position:
+        x: 469.6310687208005
+        y: 286.5
+      positionAbsolute:
+        x: 469.6310687208005
+        y: 286.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1743660332041.result#}}'
+        desc: ''
+        selected: false
+        title: 回答
+        type: answer
+        variables: []
+      height: 103
+      id: '1727244764225'
+      position:
+        x: 3168.7992790591156
+        y: 317.7268146047289
+      positionAbsolute:
+        x: 3168.7992790591156
+        y: 317.7268146047289
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        items:
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1727235420145'
+          - text
+          variable_selector:
+          - conversation
+          - text
+          write_mode: over-write
+        selected: false
+        title: 变量赋值
+        type: assigner
+        version: '2'
+      height: 88
+      id: '1742785731675'
+      position:
+        x: 771.1608349131534
+        y: 286.5
+      positionAbsolute:
+        x: 771.1608349131534
+        y: 286.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1727235420145'
+          - text
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen-max
+          provider: tongyi
+        prompt_template:
+        - id: a6a675a4-6738-4c57-8aa6-c7169ec90ef6
+          role: system
+          text: "## 角色\n你是一个专业的合同文本解析助手，你的任务是从给定的提取文档中提取关键信息，并严格按照指定的 Schema 格式输出字符串，确保字段数据与原始文档内容完全匹配。\
+            \  \n\n## 任务要求\n1. 严格匹配字段：确保提取的内容与字段来源严格对应，不得自行推测或转换字段值。\n2. 表格数据匹配：对于表格数据，需逐行解析，必须并保证字段数据按行匹配，避免数据错位，避免虚假数据。\n\
+            3. 输出格式：请严格返回一个合法的 JSON 对象，不要包含任何额外的 Markdown 代码块（如 ```json）或解释性文本；且必须符合\
+            \ Schema 结构，不得包含多余内容。\n4. 字段缺失处理：如果字段在提取文档中找不到，则填入 null，不得填入其他默认值。\n5.\
+            \ 时间格式转换：所有时间字段需转换为标准日期格式（YYYY-MM-DD）。\n6. 数字格式：保持原始格式输出，不得进行四舍五入或单位转换，非数字格式则填入\
+            \ null。\n7. 勾选框格式：如果勾选，填入对应勾选框后面的文字，如果没有则填入 null。\n\n## 提取文档\n{{#context#}}\n\
+            \n## Schema\n{\n  \"name\": \"string\",\n  \"businessManagementCompany\"\
+            : \"string\",\n  \"businessManagementCompanyCode\": \"string\",\n  \"\
+            businessManagementCompanyContact\": \"string\",\n  \"businessManagementCompanyPhone\"\
+            : \"string\",\n  \"contractCustomers\": \"string\",\n  \"contractCustomersCode\"\
+            : \"string\",\n  \"contact\": \"string\",\n  \"contactPhone\": \"string\"\
+            ,\n  \"startDate\": \"string\",\n  \"endDate\": \"string\",  \n  \"brandCode\"\
+            : \"string\", \n  \"chargeMethodName\": \"string\",\n  \"decorationDays\"\
+            : \"string\",\n  \"businessTermsInfoDtoList\": [\n    {\n      \"startTimePeriod\"\
+            : \"string\",\n      \"endTimePeriod\": \"string\",\n      \"monthUnitPrice\"\
+            : \"string\",\n      \"monthUnitPriceNoTax\": \"string\",\n      \"monthTotalPrice\"\
+            : \"string\",\n      \"monthTotalPriceNoTax\": \"string\",\n      \"drawRatio\"\
+            : \"string\"\n    }\n  ]\n}\n\n\n## 字段来源\n| JSON 字段名                |\
+            \ 数据来源描述 |\n|----------------------------|------------|\n| `name`    \
+            \    | **合同名称**，取自文档的合同名称|\n| `businessManagementCompany`        | **甲方（出租人）**|\n\
+            | `businessManagementCompanyCode`        | **统一社会信用代码**，取自“甲方（出租人）”后的的内容\
+            \ |\n| `businessManagementCompanyContact`        | **甲方联系人**|\n| `businessManagementCompanyPhone`\
+            \        | **甲方联系电话**|\n| `contractCustomers` | **乙方（承租人）**|\n| `contractCustomersCode`\
+            \         | **统一社会信用代码/身份证号**：取自“乙方（承租人）”后的的内容 |\n| `contact` | **乙方联系人**|\n\
+            | `contactPhone` | **乙方联系电话**|\n| `startDate`           | 取自\"租赁期限\"目录下的开始时间，格式：YYYY-MM-DD\
+            \ |\n| `endDate`          | 取自\"租赁期限\"目录下的结束时间，格式：YYYY-MM-DD |\n| `brandCode`\
+            \ | **品牌**，取自“租赁用途”目录下的经营品牌 |\n| `decorationDays` | **装修期天数**，取自“装修期”目录下的开业装修期天数\
+            \ |\n| `chargeMethodName` | **勾选框**，取自“租赁期限内，该商铺租金计算方式为”后的勾选框对应勾选的内容 |\n\
+            | `businessTermsInfoDtoList` | **具体租金标准**，表格内容按行提取 |\n| `startTimePeriod`\
+            \         | **表格列**：\"租赁期限的开始时间\"，格式：YYYY-MM-DD |\n| `endTimePeriod` \
+            \          | **表格列**：\"租赁期限的结束时间\"，格式：YYYY-MM-DD |\n| `monthUnitPrice`\
+            \          | **表格列**：\"基本租金单价（元/月/㎡）含税\"，格式：数字 |\n| `monthUnitPriceNoTax`\
+            \     | **表格列**：\"基本租金单价（元/月/㎡）不含税\"，格式：数字 |\n| `monthTotalPrice`    \
+            \     | **表格列**：\"基本租金金额\"，格式：数字 |\n| `monthTotalPriceNoTax`    | **表格列**：\"\
+            基本租金金额包含的增值税税额\"，格式：数字 |\n| `drawRatio`               | **表格列**：\"抽成比例\"\
+            ，格式：数字 |"
+        - id: 9c379fa1-4da3-42b7-9ff4-ad93be47a582
+          role: user
+          text: '{{#1727235420145.text#}}'
+        selected: false
+        title: TY文档转换
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 98
+      id: '1742975365645'
+      position:
+        x: 1403.569014946623
+        y: 317.7268146047289
+      positionAbsolute:
+        x: 1403.569014946623
+        y: 317.7268146047289
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "import re\n\ndef main(text: str) -> dict:\n    endthinkflag_match =\
+          \ re.search(r\".*(\\[ENDTHINKFLAG\\])\", text)\n    endthink_match = re.search(r\"\
+          .*(</think>)\", text)\n\n    if endthinkflag_match:\n        result = text[endthinkflag_match.end(1):]\n\
+          \    elif endthink_match:\n        result = text[endthink_match.end(1):]\n\
+          \    else:\n        result = text\n    return {'result': result}\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: DS去除思考
+        type: code
+        variables:
+        - value_selector:
+          - '17435722334800'
+          - text
+          variable: text
+      height: 54
+      id: '1743127987774'
+      position:
+        x: 1717.559353218749
+        y: 466.34766244937947
+      positionAbsolute:
+        x: 1717.559353218749
+        y: 466.34766244937947
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "import json\nimport re\n\ndef main(text: str) -> dict:\n    try:\n\
+          \        # 第一步：去除 Markdown 代码块标记\n        cleaned = re.sub(r'^```json\\\
+          n|```$', '', text.strip(), flags=re.IGNORECASE)\n\n        # 第二步：修复 JSON\
+          \ 里的双重转义字符\n        cleaned = cleaned.replace('\\\\\"', '\"').replace('\\\
+          \\n', '')\n\n        # 第三步：尝试提取 JSON 数据\n        json_match = re.search(r'\\\
+          {.*\\}', cleaned, re.DOTALL)\n        if not json_match:\n            return\
+          \ {'result': text}\n\n        json_str = json_match.group()\n\n        #\
+          \ 第四步：解析 JSON\n        result = json.loads(json_str)\n\n        # 第五步：去除多余空格并返回\n\
+          \        compact_json = json.dumps(result, ensure_ascii=False, separators=(',',\
+          \ ':'))\n\n        return {'result': compact_json}\n\n    except Exception\
+          \ as e:\n        return {'result': text}\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: 去除转义
+        type: code
+        variables:
+        - value_selector:
+          - '1743574627881'
+          - output
+          variable: text
+      height: 54
+      id: '1743142066025'
+      position:
+        x: 2509.0488167806484
+        y: 317.7268146047289
+      positionAbsolute:
+        x: 2509.0488167806484
+        y: 317.7268146047289
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: is
+            id: 7f3f4571-80c6-4914-9034-4f546371a068
+            value: TY
+            varType: string
+            variable_selector:
+            - '1727234055352'
+            - llm_type
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: 条件分支
+        type: if-else
+      height: 126
+      id: '1743572188745'
+      position:
+        x: 1079.1901013137635
+        y: 286.5
+      positionAbsolute:
+        x: 1079.1901013137635
+        y: 286.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1727235420145'
+          - text
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: deepseek-reasoner
+          provider: deepseek
+        prompt_template:
+        - id: a6a675a4-6738-4c57-8aa6-c7169ec90ef6
+          role: system
+          text: "## 角色\n你是一个专业的合同文本解析助手，你的任务是从给定的提取文档中提取关键信息，并严格按照指定的 Schema 格式输出字符串，确保字段数据与原始文档内容完全匹配。\
+            \  \n\n## 任务要求\n1. 严格匹配字段：确保提取的内容与字段来源严格对应，不得自行推测或转换字段值。\n2. 表格数据匹配：对于表格数据，需逐行解析，必须并保证字段数据按行匹配，避免数据错位，避免虚假数据。\n\
+            3. 输出格式：请严格返回一个合法的 JSON 对象，不要包含任何额外的 Markdown 代码块（如 ```json）或解释性文本；且必须符合\
+            \ Schema 结构，不得包含多余内容。\n4. 字段缺失处理：如果字段在提取文档中找不到，则填入 null，不得填入其他默认值。\n5.\
+            \ 时间格式转换：所有时间字段需转换为标准日期格式（YYYY-MM-DD）。\n6. 数字格式：保持原始格式输出，不得进行四舍五入或单位转换，非数字格式则填入\
+            \ null。\n7. 勾选框格式：如果勾选，填入对应勾选框后面的文字，如果没有则填入 null。\n\n## 提取文档\n{{#context#}}\n\
+            \n## Schema\n{\n  \"name\": \"string\",\n  \"businessManagementCompany\"\
+            : \"string\",\n  \"businessManagementCompanyCode\": \"string\",\n  \"\
+            businessManagementCompanyContact\": \"string\",\n  \"businessManagementCompanyPhone\"\
+            : \"string\",\n  \"contractCustomers\": \"string\",\n  \"contractCustomersCode\"\
+            : \"string\",\n  \"contact\": \"string\",\n  \"contactPhone\": \"string\"\
+            ,\n  \"startDate\": \"string\",\n  \"endDate\": \"string\",  \n  \"brandCode\"\
+            : \"string\", \n  \"chargeMethodName\": \"string\",\n  \"decorationDays\"\
+            : \"string\",\n  \"businessTermsInfoDtoList\": [\n    {\n      \"startTimePeriod\"\
+            : \"string\",\n      \"endTimePeriod\": \"string\",\n      \"monthUnitPrice\"\
+            : \"string\",\n      \"monthUnitPriceNoTax\": \"string\",\n      \"monthTotalPrice\"\
+            : \"string\",\n      \"monthTotalPriceNoTax\": \"string\",\n      \"drawRatio\"\
+            : \"string\"\n    }\n  ]\n}\n\n\n## 字段来源\n| JSON 字段名                |\
+            \ 数据来源描述 |\n|----------------------------|------------|\n| `name`    \
+            \    | **合同名称**，取自文档的合同名称|\n| `businessManagementCompany`        | **甲方（出租人）**|\n\
+            | `businessManagementCompanyCode`        | **统一社会信用代码**，取自“甲方（出租人）”后的的内容\
+            \ |\n| `businessManagementCompanyContact`        | **甲方联系人**|\n| `businessManagementCompanyPhone`\
+            \        | **甲方联系电话**|\n| `contractCustomers` | **乙方（承租人）**|\n| `contractCustomersCode`\
+            \         | **统一社会信用代码/身份证号**：取自“乙方（承租人）”后的的内容 |\n| `contact` | **乙方联系人**|\n\
+            | `contactPhone` | **乙方联系电话**|\n| `startDate`           | 取自\"租赁期限\"目录下的开始时间，格式：YYYY-MM-DD\
+            \ |\n| `endDate`          | 取自\"租赁期限\"目录下的结束时间，格式：YYYY-MM-DD |\n| `brandCode`\
+            \ | **品牌**，取自“租赁用途”目录下的经营品牌 |\n| `decorationDays` | **装修期天数**，取自“装修期”目录下的开业装修期天数\
+            \ |\n| `chargeMethodName` | **勾选框**，取自“租赁期限内，该商铺租金计算方式为”后的勾选框对应勾选的内容 |\n\
+            | `businessTermsInfoDtoList` | **具体租金标准**，表格内容按行提取 |\n| `startTimePeriod`\
+            \         | **表格列**：\"租赁期限的开始时间\"，格式：YYYY-MM-DD |\n| `endTimePeriod` \
+            \          | **表格列**：\"租赁期限的结束时间\"，格式：YYYY-MM-DD |\n| `monthUnitPrice`\
+            \          | **表格列**：\"基本租金单价（元/月/㎡）含税\"，格式：数字 |\n| `monthUnitPriceNoTax`\
+            \     | **表格列**：\"基本租金单价（元/月/㎡）不含税\"，格式：数字 |\n| `monthTotalPrice`    \
+            \     | **表格列**：\"基本租金金额\"，格式：数字 |\n| `monthTotalPriceNoTax`    | **表格列**：\"\
+            基本租金金额包含的增值税税额\"，格式：数字 |\n| `drawRatio`               | **表格列**：\"抽成比例\"\
+            ，格式：数字 |"
+        - id: 9c379fa1-4da3-42b7-9ff4-ad93be47a582
+          role: user
+          text: '{{#1727235420145.text#}}'
+        selected: false
+        title: 'DS文档转换 '
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 98
+      id: '17435722334800'
+      position:
+        x: 1403.569014946623
+        y: 466.34766244937947
+      positionAbsolute:
+        x: 1403.569014946623
+        y: 466.34766244937947
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        output_type: string
+        selected: false
+        title: 变量聚合器
+        type: variable-aggregator
+        variables:
+        - - '1743663970298'
+          - text
+        - - '1743127987774'
+          - result
+      height: 130
+      id: '1743574627881'
+      position:
+        x: 2177.1650800255056
+        y: 317.7268146047289
+      positionAbsolute:
+        x: 2177.1650800255056
+        y: 317.7268146047289
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "import re\nfrom datetime import datetime\nimport time\n\ndef main(json_str):\n\
+          \    # 匹配 YYYY-MM-DD 格式的日期\n    pattern = r'(?<!\\\\)\"(\\d{4}-\\d{2}-\\\
+          d{2})\"(?!\\\\)'\n\n    # 替换字符串中的日期 \n    result = re.sub(pattern, convert_to_timestamp,\
+          \ json_str)\n    return {'result': result }\n\ndef convert_to_timestamp(match):\n\
+          \    date_str = match.group(1)  # 提取匹配的日期字符串\n    dt = datetime.strptime(date_str,\
+          \ \"%Y-%m-%d\")  # 转换为 datetime 对象\n    timestamp = int(time.mktime(dt.timetuple()))\
+          \ * 1000  # 转换为13位时间戳\n    return str(timestamp)  # 返回数字格式（不加引号）\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: 时间戳转化
+        type: code
+        variables:
+        - value_selector:
+          - '1743142066025'
+          - result
+          variable: json_str
+      height: 54
+      id: '1743660332041'
+      position:
+        x: 2834.9772399481635
+        y: 317.7268146047289
+      positionAbsolute:
+        x: 2834.9772399481635
+        y: 317.7268146047289
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1742975365645'
+          - text
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen-turbo
+          provider: tongyi
+        prompt_template:
+        - id: f82ead0a-b10d-4105-9ec7-28e91b6489f4
+          role: system
+          text: "## 角色\n你是一个专业的JSON数据处理助手，你的任务是从给定的提取文档中补全JSON数据格式，并严格按照指定的 Schema\
+            \ 格式输出字符串。  \n\n## 任务要求\n补全对应数据的json格式，将其改成合法的json输出\n\n## 提取文档\n{{#context#}}\n\
+            \n## Schema\n{\n  \"name\": \"string\",\n  \"businessManagementCompany\"\
+            : \"string\",\n  \"businessManagementCompanyCode\": \"string\",\n  \"\
+            businessManagementCompanyContact\": \"string\",\n  \"businessManagementCompanyPhone\"\
+            : \"string\",\n  \"contractCustomers\": \"string\",\n  \"contractCustomersCode\"\
+            : \"string\",\n  \"contact\": \"string\",\n  \"contactPhone\": \"string\"\
+            ,\n  \"startDate\": \"string\",\n  \"endDate\": \"string\",  \n  \"brandCode\"\
+            : \"string\", \n  \"chargeMethodName\": \"string\",\n  \"decorationDays\"\
+            : \"string\",\n  \"businessTermsInfoDtoList\": [\n    {\n      \"startTimePeriod\"\
+            : \"string\",\n      \"endTimePeriod\": \"string\",\n      \"monthUnitPrice\"\
+            : \"string\",\n      \"monthUnitPriceNoTax\": \"string\",\n      \"monthTotalPrice\"\
+            : \"string\",\n      \"monthTotalPriceNoTax\": \"string\",\n      \"drawRatio\"\
+            : \"string\"\n    }\n  ]\n}"
+        - id: 09b05618-ee78-4642-88bb-fb7403b34659
+          role: user
+          text: '{{#1742975365645.text#}}'
+        selected: false
+        title: TY JSON补全
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 98
+      id: '1743663970298'
+      position:
+        x: 1717.559353218749
+        y: 317.7268146047289
+      positionAbsolute:
+        x: 1717.559353218749
+        y: 317.7268146047289
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: -412.00488603286703
+      y: -106.29030020384141
+      zoom: 0.8754023919388939

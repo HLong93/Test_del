@@ -1,0 +1,46 @@
+{
+  "original_file": "待处理知识库\\SRMS Support\\Batch无法POST需要补回收据号码.docx",
+  "qa_pairs": [
+    {
+      "question": "相关问题",
+      "answer": "文档来源：Batch无法POST需要补回收据号码\n\n这种情况一般是非住户收费没有录入收据号码。\n先检查是否数据在cmbnont里面\n如果是在，则更新cmbnont的收据号码（收据号码和批次号码同事提供）\nupdate cmbnont set CHKDESC = '0007842901', RCPTNO = '7842901', RECPTNO = '0007842901' where cmbatchid = 'TU717544' and item = 1\n更新后让同事再POST就可以\n第二种情况，是CMRCPT，RECPT没有收据号码。需要更新对应的表以下字段\n先查询数据情况\nselect * from cmrcpt where cmbatchid = 'MI717756'\nselect * from recpt where cmbatchid = 'MI717756'\n更新数据\n--update cmrcpt set RECPTNO = '0006889667', CHKDESC = '0006889667', RCPTNO = '6889667' where cmbatchid = 'MI717756' and RECPTNO = '0008772815'\n--update recpt set RECPTNO = '0006889667', CHECKNO = '0006889667', APPRV = 'Y',RCPTNO = '6889667' where cmbatchid = 'MI717756' and RECPTNO = 'MI256168'",
+      "keywords": [
+        "先检查是否数据在",
+        "没有收据号码",
+        "Batch",
+        "更新",
+        "先查询数据情况",
+        "里面",
+        "收据号码和批次号码同事提供",
+        "第二种情况",
+        "如果是在",
+        "更新数据",
+        "更新后让同事再",
+        "的收据号码"
+      ],
+      "source": "文档来源：Batch无法POST需要补回收据号码",
+      "type": "text"
+    }
+  ],
+  "raw_content": {
+    "title": "Batch无法POST需要补回收据号码",
+    "source_file": "待处理知识库\\SRMS Support\\Batch无法POST需要补回收据号码.docx",
+    "type": "word",
+    "sections": [
+      {
+        "heading": "",
+        "content": "这种情况一般是非住户收费没有录入收据号码。\n先检查是否数据在cmbnont里面\n如果是在，则更新cmbnont的收据号码（收据号码和批次号码同事提供）\nupdate cmbnont set CHKDESC = '0007842901', RCPTNO = '7842901', RECPTNO = '0007842901' where cmbatchid = 'TU717544' and item = 1\n更新后让同事再POST就可以\n第二种情况，是CMRCPT，RECPT没有收据号码。需要更新对应的表以下字段\n先查询数据情况\nselect * from cmrcpt where cmbatchid = 'MI717756'\nselect * from recpt where cmbatchid = 'MI717756'\n更新数据\n--update cmrcpt set RECPTNO = '0006889667', CHKDESC = '0006889667', RCPTNO = '6889667' where cmbatchid = 'MI717756' and RECPTNO = '0008772815'\n--update recpt set RECPTNO = '0006889667', CHECKNO = '0006889667', APPRV = 'Y',RCPTNO = '6889667' where cmbatchid = 'MI717756' and RECPTNO = 'MI256168'\n",
+        "tables": [
+          {
+            "headers": [
+              "select \n    (select count(*) from CMLEDG (nolock) where cmbatchid = cmbtch.cmbatchid) as CMLEDG\n    ,(select count(*) from cmledgapply (nolock) where tranid in (select tranid from cmledg where cmbatchid = cmbtch.cmbatchid)) as ledgapply_tranid_count\n    ,(select count(*) from cmledgapply (nolock) where ptranid in (select tranid from cmledg where cmbatchid = cmbtch.cmbatchid)) as ledgapply_ptranid_count\n    ,(select count(*) from cmbnont (nolock) where cmbatchid = cmbtch.cmbatchid) as cmbnont\n\t,(select count(*) from cmsdlg (nolock) where cmbatchid = cmbtch.cmbatchid) as cmsdlg\n    ,(select count(*) from cmrcpt (nolock) where cmbatchid = cmbtch.cmbatchid) as cmrcpt\n    ,(select count(*) from recpt (nolock) where cmbatchid = cmbtch.cmbatchid) as recpt\n    ,(select count(*) from cmmisc (nolock) where cmbatchid = cmbtch.cmbatchid) as cmmisc\n    ,(select count(*) from cmnont (nolock) where cmbatchid = cmbtch.cmbatchid) as cmnont\n    ,(select count(*) from CMDEPOSIT (nolock) where cmbatchid = cmbtch.cmbatchid) as CMDEPOSIT\n    ,(select count(*) from cmvoidreceipt (nolock) where cmbatchid = cmbtch.cmbatchid) as cmvoidreceipt\n\t,(select count(*) from CMSDADJ (nolock) where cmbatchid = cmbtch.cmbatchid) as CMSDADJ\n    ,cmbtch.*\nfrom cmbtch\nleft join proj b on b.siteid = left(cmbtch.cmbatchid,2)\nwhere cmbtch.cmbatchid IN ('TJ717073')"
+            ],
+            "rows": []
+          }
+        ],
+        "images": []
+      }
+    ],
+    "images": []
+  }
+}

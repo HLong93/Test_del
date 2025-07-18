@@ -1,0 +1,493 @@
+app:
+  description: '高级版企业级可扩展问答系统，支持复杂业务逻辑、多知识库、MCP集成和高度可扩展架构'
+  icon: 🚀
+  icon_background: '#F3E5F5'
+  mode: advanced-chat
+  name: 高级版企业级可扩展问答系统
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.1.5
+workflow:
+  conversation_variables:
+  - id: user_context
+    name: 用户上下文
+    value_type: object
+    description: 存储用户的历史交互信息
+  - id: session_data
+    name: 会话数据
+    value_type: object
+    description: 当前会话的相关数据
+  environment_variables:
+  - id: api_base_url
+    name: API基础URL
+    value: 'https://api.example.com'
+  - id: max_retry_count
+    name: 最大重试次数
+    value: '3'
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .txt
+      - .md
+      - .pdf
+      - .docx
+      - .xlsx
+      - .pptx
+      - .csv
+      - .json
+      - .xml
+      - .html
+      - .jpg
+      - .jpeg
+      - .png
+      - .gif
+      - .webp
+      - .svg
+      - .bmp
+      - .mp3
+      - .wav
+      - .m4a
+      - .flac
+      - .mp4
+      - .avi
+      - .mov
+      - .wmv
+      - .mkv
+      allowed_file_types:
+      - document
+      - image
+      - audio
+      - video
+      - custom
+      allowed_file_upload_methods:
+      - remote_url
+      - local_file
+      enabled: true
+      fileUploadConfig:
+        audio_file_size_limit: 200
+        batch_count_limit: 50
+        file_size_limit: 200
+        image_file_size_limit: 100
+        video_file_size_limit: 1000
+        workflow_file_upload_limit: 100
+      image:
+        enabled: true
+        number_limits: 20
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 50
+    opening_statement: |
+      欢迎使用企业级智能问答系统！
+      
+      我是您的专业AI助手，具备以下核心能力：
+      ✨ 多模态内容处理（文本、图片、音频、视频）
+      🔍 智能知识库检索与分析
+      🛠️ 丰富的工具集成（MCP、API、自定义工具）
+      🧠 复杂业务逻辑处理
+      📊 数据分析与报告生成
+      🔄 可扩展的企业级架构
+      
+      请告诉我您需要什么帮助，或上传相关文件开始对话。
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: true
+      configs:
+      - keywords: ['机密', '内部', '敏感']
+        action: 'block'
+        replacement: ''
+    speech_to_text:
+      enabled: true
+    suggested_questions:
+    - 分析这份企业报告的关键指标
+    - 帮我处理这批客户数据
+    - 生成系统操作的标准流程
+    - 集成外部API获取实时数据
+    - 创建自动化工作流程
+    suggested_questions_after_answer:
+      enabled: true
+    text_to_speech:
+      enabled: true
+      language: 'zh-CN'
+      voice: 'onyx'
+  graph:
+    edges:
+    - data:
+        sourceType: start
+        targetType: parameter-extractor
+      id: start-parameter-extractor
+      source: start
+      sourceHandle: source
+      target: parameter-extractor
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: parameter-extractor
+        targetType: document-extractor
+      id: parameter-extractor-document-extractor
+      source: parameter-extractor
+      sourceHandle: source
+      target: document-extractor
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: document-extractor
+        targetType: question-classifier
+      id: document-extractor-question-classifier
+      source: document-extractor
+      sourceHandle: source
+      target: question-classifier
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: question-classifier
+        targetType: if-else-main
+      id: question-classifier-if-else-main
+      source: question-classifier
+      sourceHandle: source
+      target: if-else-main
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: if-else-main
+        targetType: iteration-processor
+      id: if-else-main-iteration-processor
+      source: if-else-main
+      sourceHandle: true
+      target: iteration-processor
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: if-else-main
+        targetType: knowledge-retrieval-primary
+      id: if-else-main-knowledge-retrieval-primary
+      source: if-else-main
+      sourceHandle: false
+      target: knowledge-retrieval-primary
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: iteration-processor
+        targetType: knowledge-retrieval-secondary
+      id: iteration-processor-knowledge-retrieval-secondary
+      source: iteration-processor
+      sourceHandle: source
+      target: knowledge-retrieval-secondary
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: knowledge-retrieval-primary
+        targetType: http-request
+      id: knowledge-retrieval-primary-http-request
+      source: knowledge-retrieval-primary
+      sourceHandle: source
+      target: http-request
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: knowledge-retrieval-secondary
+        targetType: http-request
+      id: knowledge-retrieval-secondary-http-request
+      source: knowledge-retrieval-secondary
+      sourceHandle: source
+      target: http-request
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: http-request
+        targetType: code-executor
+      id: http-request-code-executor
+      source: http-request
+      sourceHandle: source
+      target: code-executor
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: code-executor
+        targetType: mcp-tools
+      id: code-executor-mcp-tools
+      source: code-executor
+      sourceHandle: source
+      target: mcp-tools
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: mcp-tools
+        targetType: agent-orchestrator
+      id: mcp-tools-agent-orchestrator
+      source: mcp-tools
+      sourceHandle: source
+      target: agent-orchestrator
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: agent-orchestrator
+        targetType: variable-aggregator
+      id: agent-orchestrator-variable-aggregator
+      source: agent-orchestrator
+      sourceHandle: source
+      target: variable-aggregator
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: variable-aggregator
+        targetType: template-transformer
+      id: variable-aggregator-template-transformer
+      source: variable-aggregator
+      sourceHandle: source
+      target: template-transformer
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: template-transformer
+        targetType: llm-final
+      id: template-transformer-llm-final
+      source: template-transformer
+      sourceHandle: source
+      target: llm-final
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: llm-final
+        targetType: answer
+      id: llm-final-answer
+      source: llm-final
+      sourceHandle: source
+      target: answer
+      targetHandle: target
+      type: custom
+    nodes:
+    - data:
+        desc: '企业级多模态输入处理'
+        selected: false
+        title: 开始
+        type: start
+        variables:
+        - label: 用户查询
+          max_length: 5000
+          options: []
+          required: false
+          type: paragraph
+          variable: user_query
+        - label: 业务类型
+          options:
+          - 技术支持
+          - 数据分析
+          - 流程优化
+          - 系统集成
+          - 报告生成
+          - 知识管理
+          - 其他
+          required: false
+          type: select
+          variable: business_type
+        - label: 优先级
+          options:
+          - 高
+          - 中
+          - 低
+          required: false
+          type: select
+          variable: priority
+        - label: 部门
+          max_length: 100
+          options: []
+          required: false
+          type: text
+          variable: department
+        - label: 批量文件
+          allowed_file_extensions:
+          - .txt
+          - .md
+          - .pdf
+          - .docx
+          - .xlsx
+          - .pptx
+          - .csv
+          - .json
+          allowed_file_types:
+          - document
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          max_length: 50
+          required: false
+          type: file-list
+          variable: batch_files
+        - label: 多媒体内容
+          allowed_file_extensions:
+          - .jpg
+          - .jpeg
+          - .png
+          - .gif
+          - .webp
+          - .svg
+          - .mp3
+          - .wav
+          - .mp4
+          - .avi
+          allowed_file_types:
+          - image
+          - audio
+          - video
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          max_length: 20
+          required: false
+          type: file-list
+          variable: multimedia_files
+      height: 116
+      id: start
+      position:
+        x: 50
+        y: 300
+      positionAbsolute:
+        x: 50
+        y: 300
+      selected: false
+      type: custom
+      width: 244
+    - data:
+        desc: '提取关键参数和元数据'
+        instruction: |
+          从用户输入中提取以下关键参数：
+          1. 核心需求关键词
+          2. 业务领域标识
+          3. 紧急程度评估
+          4. 所需输出格式
+          5. 相关系统或模块
+        model:
+          completion_params:
+            temperature: 0.1
+            max_tokens: 500
+          mode: chat
+          name: qwen-turbo
+          provider: tongyi
+        parameters:
+        - name: keywords
+          type: array
+          description: 核心关键词列表
+        - name: domain
+          type: string
+          description: 业务领域
+        - name: urgency
+          type: string
+          description: 紧急程度
+        - name: output_format
+          type: string
+          description: 期望输出格式
+        query_variable_selector:
+        - start
+        - user_query
+        selected: false
+        title: 参数提取
+        type: parameter-extractor
+      height: 118
+      id: parameter-extractor
+      position:
+        x: 350
+        y: 300
+      positionAbsolute:
+        x: 350
+        y: 300
+      selected: false
+      type: custom
+      width: 244
+    - data:
+        desc: '高级文档处理和内容提取'
+        is_array_file: true
+        selected: false
+        title: 文档提取器
+        type: document-extractor
+        variable_selector:
+        - start
+        - batch_files
+      height: 92
+      id: document-extractor
+      position:
+        x: 650
+        y: 300
+      positionAbsolute:
+        x: 650
+        y: 300
+      selected: false
+      type: custom
+      width: 244
+    - data:
+        classes:
+        - class_name: 复杂数据分析
+          id: complex_analysis
+        - class_name: 多系统集成
+          id: system_integration
+        - class_name: 批量处理任务
+          id: batch_processing
+        - class_name: 实时查询
+          id: realtime_query
+        - class_name: 报告生成
+          id: report_generation
+        - class_name: 工作流自动化
+          id: workflow_automation
+        - class_name: 知识库管理
+          id: knowledge_management
+        - class_name: 技术支持
+          id: technical_support
+        - class_name: 业务咨询
+          id: business_consulting
+        desc: '企业级多层次问题分类'
+        instruction: |
+          基于提取的参数{{#parameter-extractor.keywords#}}和业务类型{{#start.business_type#}}，
+          进行精确的问题分类。考虑：
+          1. 任务复杂度
+          2. 所需资源类型
+          3. 处理优先级
+          4. 业务影响范围
+        model:
+          completion_params:
+            temperature: 0.05
+          mode: chat
+          name: qwen-max
+          provider: tongyi
+        query_variable_selector:
+        - sys
+        - query
+        selected: false
+        title: 企业级问题分类
+        type: question-classifier
+      height: 118
+      id: question-classifier
+      position:
+        x: 950
+        y: 300
+      positionAbsolute:
+        x: 950
+        y: 300
+      selected: false
+      type: custom
+      width: 244
+    - data:
+        conditions:
+        - comparison_operator: 'in'
+          id: condition1
+          logical_operator: 'and'
+          variable_selector:
+          - question-classifier
+          - class_name
+          value: 'batch_processing,complex_analysis,system_integration'
+        desc: '根据任务复杂度选择处理策略'
+        logical_operator: 'and'
+        selected: false
+        title: 主要条件分支
+        type: if-else
+      height: 126
+      id: if-else-main
+      position:
+        x: 1250
+        y: 300
+      positionAbsolute:
+        x: 1250
+        y: 300
+      selected: false
+      type: custom
+      width: 244

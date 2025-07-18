@@ -1,0 +1,35 @@
+{
+  "original_file": "待处理知识库\\SRMS Support\\删除Occupant.docx",
+  "qa_pairs": [
+    {
+      "question": "相关问题",
+      "answer": "文档来源：删除Occupant\n\n删除住户，可能有关联得cmrecc表信息，如果有也一并删除\nDelete from leas where leased = ‘P3382536’\n如果需要还原住户，则更新\nupdate leas set vacate = null, stopbilldate = null where leasid = 'xxx'",
+      "keywords": [
+        "更新",
+        "删除",
+        "如果有也一并删除",
+        "如果需要还原住户",
+        "可能有关联得",
+        "表信息",
+        "删除住户",
+        "则更新"
+      ],
+      "source": "文档来源：删除Occupant",
+      "type": "text"
+    }
+  ],
+  "raw_content": {
+    "title": "删除Occupant",
+    "source_file": "待处理知识库\\SRMS Support\\删除Occupant.docx",
+    "type": "word",
+    "sections": [
+      {
+        "heading": "",
+        "content": "删除住户，可能有关联得cmrecc表信息，如果有也一并删除\nDelete from leas where leased = ‘P3382536’\n如果需要还原住户，则更新\nupdate leas set vacate = null, stopbilldate = null where leasid = 'xxx'\n",
+        "tables": [],
+        "images": []
+      }
+    ],
+    "images": []
+  }
+}

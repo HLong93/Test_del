@@ -1,0 +1,39 @@
+{
+  "original_file": "待处理知识库\\SRMS Support\\财务部要求更改数据.docx",
+  "qa_pairs": [
+    {
+      "question": "相关问题",
+      "answer": "文档来源：财务部要求更改数据\n\n更改Cmledg数据\n根据财务部提供的Excel，然后用SQL更新cmledg和cmledgapply表的数据。\n更新时候建议根据tranid一个个更改，避免批量更新搞错数据\n按金转移\n先找出对应的按金交易tranid\nSelect * from cmsdlg where leaisd = ‘xxxxx’\n将某个住户按金转移到新住户\nUpdate cmsdlg set leased = ‘’ where tranid = ‘xxxxxx’;\n删除Batch\n先检查批次是否Open的\nSelect * from cmbtch where cmbatchid = ‘xxxxx’\n如果是Open就可以删除\nDelete from cmbtch where cmbatchid = ‘’\n如果有关联表，也得一并删除\n\n相关SQL语句：\n```sql\nSelect\n```\n",
+      "keywords": [
+        "更新时候建议根据",
+        "Batch",
+        "更新",
+        "将某个住户按金转移到新住户",
+        "删除",
+        "就可以删除",
+        "一个个更改",
+        "表的数据",
+        "更改",
+        "如果有关联表",
+        "数据",
+        "SQL"
+      ],
+      "source": "文档来源：财务部要求更改数据",
+      "type": "text"
+    }
+  ],
+  "raw_content": {
+    "title": "财务部要求更改数据",
+    "source_file": "待处理知识库\\SRMS Support\\财务部要求更改数据.docx",
+    "type": "word",
+    "sections": [
+      {
+        "heading": "",
+        "content": "更改Cmledg数据\n根据财务部提供的Excel，然后用SQL更新cmledg和cmledgapply表的数据。\n更新时候建议根据tranid一个个更改，避免批量更新搞错数据\n按金转移\n先找出对应的按金交易tranid\nSelect * from cmsdlg where leaisd = ‘xxxxx’\n将某个住户按金转移到新住户\nUpdate cmsdlg set leased = ‘’ where tranid = ‘xxxxxx’;\n删除Batch\n先检查批次是否Open的\nSelect * from cmbtch where cmbatchid = ‘xxxxx’\n如果是Open就可以删除\nDelete from cmbtch where cmbatchid = ‘’\n如果有关联表，也得一并删除\n",
+        "tables": [],
+        "images": []
+      }
+    ],
+    "images": []
+  }
+}

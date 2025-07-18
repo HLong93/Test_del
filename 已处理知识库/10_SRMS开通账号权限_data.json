@@ -1,0 +1,105 @@
+{
+  "original_file": "待处理知识库\\SRMS Support\\SRMS开通账号权限.docx",
+  "qa_pairs": [
+    {
+      "question": "相关问题",
+      "answer": "文档来源：SRMS开通账号权限\n\n根据用户提供BU查询小区的SITEID是什么\nSELECT projid,region, sitecode,(estatecode), siteid , rtrim(projname),projname_cn, SITE_USERID\nfrom proj where projid in ('70221')\n根据查询到的SITEID，进行权限创建\n第一个参数员工号，第二个员工名称，第三个SITEID.\n权限分三种",
+      "keywords": [
+        "根据查询到的",
+        "进行权限创建",
+        "第二个员工名称",
+        "查询小区的",
+        "根据用户提供",
+        "是什么",
+        "第三个",
+        "第一个参数员工号",
+        "权限分三种"
+      ],
+      "source": "文档来源：SRMS开通账号权限",
+      "type": "text"
+    },
+    {
+      "question": "[数字]. 小区普通Officer同事",
+      "answer": "文档来源：SRMS开通账号权限\n\n--exec sp_CREATE_ACCOUNT '631224', 'NG CHING YI', 'AO', 'PMSITEOFFICER'",
+      "keywords": [],
+      "source": "文档来源：SRMS开通账号权限",
+      "type": "text"
+    },
+    {
+      "question": "[数字]. 小区经理SIC",
+      "answer": "文档来源：SRMS开通账号权限\n\n--exec sp_CREATE_ACCOUNT '640692', 'Lee Mei Chi', '5C', 'PMSITEIC'",
+      "keywords": [],
+      "source": "文档来源：SRMS开通账号权限",
+      "type": "text"
+    },
+    {
+      "question": "[数字]. 深圳或者香港财务部同事",
+      "answer": "文档来源：SRMS开通账号权限\n\n--exec sp_CREATE_ACCOUNT 'kiralu', 'Kira Lu', 'HO', 'SMSHQFINCLERK'",
+      "keywords": [],
+      "source": "文档来源：SRMS开通账号权限",
+      "type": "text"
+    },
+    {
+      "question": "[数字].小区列印Demand Note账号创建",
+      "answer": "文档来源：SRMS开通账号权限\n\n--exec sp_CREATE_ACCOUNT 'C012', 'CAUSEWAY CENTRE', 'Z9', 'PMSITEVIEWER'",
+      "keywords": [
+        "IE"
+      ],
+      "source": "文档来源：SRMS开通账号权限",
+      "type": "text"
+    },
+    {
+      "question": "[数字].管理员权限创建",
+      "answer": "文档来源：SRMS开通账号权限\n\n--exec sp_CREATE_ACCOUNT 'sysadm', 'sysadm', '4B', 'ITADMIN'\n取消用户权限\nupdate SMS_USERSITEROLE set enddate=convert(varchar,getdate(),112), endtime=convert(varchar(5),getdate(),108) WHERE enddate is null and\nSMS_USERID='635051' and siteid='4B'",
+      "keywords": [
+        "取消用户权限"
+      ],
+      "source": "文档来源：SRMS开通账号权限",
+      "type": "text"
+    }
+  ],
+  "raw_content": {
+    "title": "SRMS开通账号权限",
+    "source_file": "待处理知识库\\SRMS Support\\SRMS开通账号权限.docx",
+    "type": "word",
+    "sections": [
+      {
+        "heading": "",
+        "content": "根据用户提供BU查询小区的SITEID是什么\nSELECT projid,region, sitecode,(estatecode), siteid , rtrim(projname),projname_cn, SITE_USERID\nfrom proj where projid in ('70221')\n根据查询到的SITEID，进行权限创建\n第一个参数员工号，第二个员工名称，第三个SITEID.\n权限分三种\n",
+        "tables": [],
+        "images": []
+      },
+      {
+        "heading": "1. 小区普通Officer同事",
+        "content": "--exec sp_CREATE_ACCOUNT '631224', 'NG CHING YI', 'AO', 'PMSITEOFFICER'\n",
+        "tables": [],
+        "images": []
+      },
+      {
+        "heading": "2. 小区经理SIC",
+        "content": "--exec sp_CREATE_ACCOUNT '640692', 'Lee Mei Chi', '5C', 'PMSITEIC'\n",
+        "tables": [],
+        "images": []
+      },
+      {
+        "heading": "3. 深圳或者香港财务部同事",
+        "content": "--exec sp_CREATE_ACCOUNT 'kiralu', 'Kira Lu', 'HO', 'SMSHQFINCLERK'\n",
+        "tables": [],
+        "images": []
+      },
+      {
+        "heading": "4.小区列印Demand Note账号创建",
+        "content": "--exec sp_CREATE_ACCOUNT 'C012', 'CAUSEWAY CENTRE', 'Z9', 'PMSITEVIEWER'\n",
+        "tables": [],
+        "images": []
+      },
+      {
+        "heading": "5.管理员权限创建",
+        "content": "--exec sp_CREATE_ACCOUNT 'sysadm', 'sysadm', '4B', 'ITADMIN'\n取消用户权限\nupdate SMS_USERSITEROLE set enddate=convert(varchar,getdate(),112), endtime=convert(varchar(5),getdate(),108) WHERE enddate is null and\nSMS_USERID='635051' and siteid='4B'\n",
+        "tables": [],
+        "images": []
+      }
+    ],
+    "images": []
+  }
+}

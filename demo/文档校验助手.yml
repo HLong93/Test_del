@@ -1,0 +1,266 @@
+app:
+  description: 帮助用户校验上传文档中的内容，确保文档的措辞、语法、用词准确无误，并根据上下文中明显的错误语句进行优化，将提供详细的修改建议。
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: 文档校验助手
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.1.5
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: document-extractor
+      id: 1734318381187-source-1734318841156-target
+      source: '1734318381187'
+      sourceHandle: source
+      target: '1734318841156'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: document-extractor
+        targetType: llm
+      id: 1734318841156-source-1734318384739-target
+      source: '1734318841156'
+      sourceHandle: source
+      target: '1734318384739'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: llm
+      id: 1734318384739-source-1734320691723-target
+      source: '1734318384739'
+      sourceHandle: source
+      target: '1734320691723'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: end
+      id: 1734320691723-source-1734318511071-target
+      source: '1734320691723'
+      sourceHandle: source
+      target: '1734318511071'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables:
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - document
+          allowed_file_upload_methods:
+          - local_file
+          label: 上传文档
+          max_length: 48
+          options: []
+          required: false
+          type: file
+          variable: Document
+      height: 90
+      id: '1734318381187'
+      position:
+        x: -139.14869835499695
+        y: 340.99999999999994
+      positionAbsolute:
+        x: -139.14869835499695
+        y: 340.99999999999994
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1734318841156'
+          - text
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: deepseek
+        prompt_template:
+        - id: e0b518df-d76c-4b31-bc3f-d22fb632fc39
+          role: system
+          text: "**角色**：\n我是一位专业的文章校验助手，我的任务是帮助用户校验{{#1734318841156.text#}}中的内容，确保文档的措辞、语法、用词准确无误，并根据上下文中明显的错误语句进行优化，我将提供详细的修改建议。\n\
+            \n**技能**：\n- **语法校验**：检查并纠正文档中明显的语法错误，如主谓一致、时态错误、冠词使用不当等。\n- **用词优化**：评估并改进文档中的词汇选择，确保用词准确、恰当。\n\
+            - **措辞调整**：根据上下文优化句子结构和表达方式，使文章更加流畅、易读。\n- **格式检查**：确保文档的格式一致，如标点符号、段落间距等。\n\
+            - **修改建议**：提供具体的修改建议，解释为什么需要修改以及如何修改。\n\n**工作流程**：\n1. **初步检查**：快速浏览文档，识别每个段落作者的表达意图。\n\
+            2. **详细校验**：\n   - **语法校验**：逐段落检查语法错误，特别是明显的语法错误，比如错别字，重复，语句不通顺等明显错误。\n\
+            \   - **用词优化**：评估词汇选择，提出改进建议。\n   - **措辞调整**：根据上下文优化句子结构和表达方式，是语句表达通顺。\n\
+            \   - **格式检查**：确保文档格式一致，修正格式问题。\n3. **生成报告**：汇总所有发现的问题和修改建议，并审查所有的修改建议，除非是明显的错误语句，需要进行修改，如果可以不做修改，尽量使用原文的语句，并生成详细的校验报告。\n\
+            \n**输出格式**：\n- **总结报告**：生成一份总结报告，列出所有发现的问题和修改建议，说明错误的文字段落，解释为什么需要修改以及如何修改，方便用户查看和参考，以文本格式输出即可。\n\
+            \n**示例**：\n假设用户上传了一篇关于环保的文章，部分内容如下：\n\n>随着数字化电子发票的推广和税务机关信息化的加强，企业销项发票管理面临严肃挑战。当前主要依赖手工操作，耗时长、效率低，数据准确性受人工影响大。集中管理销项发票可提升管理管理、降低风险。\n\
+            \n校验后的结果可能如下：\n\n> **随着数字化电子发票的推广和税务机关信息化的加强，企业销项发票管理面临严肃挑战。当前主要依赖手工操作，耗时长、效率低，数据准确性受人工影响大。集中管理销项发票可提升管理管理、降低风险。**\n\
+            \n> - **修改建议**：将“加强”改为“深度应用”，将“严肃”改为“严峻”，将“管理管理”改为“管理效能”。\n\n> **当前主要依赖手工操作，耗时长、效率低，数据准确性受人工影响大。**\n\
+            > - **措辞调整**：建议改为“当前主要依赖手工操作，耗时长、效率低，数据准确性很大程度上受到人工输入准确性的影响。”以明确表达意思。\n\
+            \n**注意事项**：\n- **准确性**：确保所有修改建议都是基于标准语法和常用表达方式。\n- **详细解释**：对于每一处修改，都要提供详细的解释，让用户明白为什么需要修改。\n\
+            - **保持原意**：在优化措辞和用词时，务必保持原文的主要意思不变。\n- **尊重作者风格**：尽量保留作者的写作风格，除非明显需要改进。"
+        selected: false
+        title: 语法初步校验
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 98
+      id: '1734318384739'
+      position:
+        x: 503.6451660032143
+        y: 340.99999999999994
+      positionAbsolute:
+        x: 503.6451660032143
+        y: 340.99999999999994
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1734320691723'
+          - text
+          variable: text
+        selected: false
+        title: 结束
+        type: end
+      height: 90
+      id: '1734318511071'
+      position:
+        x: 1141.009854476493
+        y: 340.99999999999994
+      positionAbsolute:
+        x: 1141.009854476493
+        y: 340.99999999999994
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        is_array_file: false
+        selected: false
+        title: 文档提取器
+        type: document-extractor
+        variable_selector:
+        - '1734318381187'
+        - Document
+      height: 92
+      id: '1734318841156'
+      position:
+        x: 186.48428343348962
+        y: 340.99999999999994
+      positionAbsolute:
+        x: 186.48428343348962
+        y: 340.99999999999994
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1734318384739'
+          - text
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: DeepSeek-R1
+          provider: openai_api_compatible
+        prompt_template:
+        - id: f648bf2f-b743-4a23-bc69-8d3b730d2218
+          role: system
+          text: 审视{{#1734318384739.text#}}中的修改建议内容，若是原文也可以表达作者的意思，修改后的文字相比于原文没有使得语言表达有极大的提升，那么就将此修改建议删除，最后只输出针对明显错误和必需优化的修改建议，根据原文错误程度按0-10分的打分范围进行评分，错误越明显，需要修改的程度越高，则评分越高，并按照错误更正和语句优化两大类型分段输出，根据错误程度评分高低排序。
+        selected: false
+        title: 意见审视
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 98
+      id: '1734320691723'
+      position:
+        x: 822.980751081707
+        y: 340.99999999999994
+      positionAbsolute:
+        x: 822.980751081707
+        y: 340.99999999999994
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: 215.984343512769
+      y: 43.437251066485715
+      zoom: 0.6937164193486707

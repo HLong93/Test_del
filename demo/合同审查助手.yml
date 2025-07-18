@@ -1,0 +1,225 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: 合同审查助手
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.1.5
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - remote_url
+      - local_file
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: false
+    sensitive_word_avoidance:
+      configs: []
+      enabled: false
+      type: ''
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        sourceType: llm
+        targetType: end
+      id: llm-end
+      source: llm
+      sourceHandle: source
+      target: end
+      targetHandle: target
+      type: custom
+    - data:
+        isInIteration: false
+        sourceType: document-extractor
+        targetType: llm
+      id: 1735268565674-source-llm-target
+      source: '1735268565674'
+      sourceHandle: source
+      target: llm
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: document-extractor
+      id: start-source-1735268565674-target
+      source: start
+      sourceHandle: source
+      target: '1735268565674'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: START
+        type: start
+        variables:
+        - allowed_file_extensions:
+          - .doc
+          - .docx
+          - .pdf
+          allowed_file_types:
+          - custom
+          allowed_file_upload_methods:
+          - local_file
+          label: 待审查合同（仅支持doc/docx/pdf文件）
+          max_length: 48
+          options: []
+          required: true
+          type: file
+          variable: Document
+        - label: 您的角色
+          max_length: 48
+          options:
+          - 甲方
+          - 乙方
+          required: true
+          type: select
+          variable: role
+      height: 116
+      id: start
+      position:
+        x: 287.0515061498891
+        y: 282
+      positionAbsolute:
+        x: 287.0515061498891
+        y: 282
+      selected: false
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1735268565674'
+          - text
+        memory: null
+        model:
+          completion_params:
+            max_tokens: 4096
+            stop: []
+            temperature: 0.5
+          mode: chat
+          name: DeepSeek-R1
+          provider: openai_api_compatible
+        prompt_template:
+        - id: 62f1a306-6540-46de-b5f6-f1f6eefdb0d7
+          role: user
+          text: "\n\n**技能**：\n- 评估{{#1735268565674.text#}}中各合同条款的合法性。\n- 识别{{#1735268565674.text#}}中的模糊表述和潜在争议点。\n\
+            - 预测并指出合同执行过程中的问题。\n- 提供改进建议，加强{{#1735268565674.text#}}内容的安全性和有效性。\n\n\
+            **工作流程**：\n1. **分析合同类型** - 全面阅读{{#1735268565674.text#}}，分析内容确认所属的合同类型。\n\
+            2. **明确法律法规和注意事项** - 分析该类型合同所涉及的各项法律法规及注意事项\n3. **详细审查** - 结合{{#1735268565674.text#}}上下文以及涉足的相关法律和注意事项，分析每个条款的合理合法性，重点检查关键条款。\n\
+            4. **问题汇总与反馈** - 列出发现的问题并提出修改建议或补充条款。\n5. **提交报告** - 提供正式审查报告，包含发现和建议。\n\
+            \n**输出格式**：\n- **审查报告**：结构清晰，分为引言、方法论、发现、结论及建议。\n\n**示例**：\n```markdown\n\
+            # 合同审查报告\n\n## 引言\n本报告旨在对[公司名称]与[合作方名称]之间的[合同类型]进行审查，并提供相关建议。\n\n## 方法论\n\
+            - 法律合规性检查\n- 语言和条款清晰度评估\n- 风险识别与分析\n- 建议改进措施\n\n## 发现\n1. **付款条件**\n \
+            \  - 条款不明确，可能导致支付延迟。\n   - 建议：明确付款时间和方式，增加违约责任条款。\n\n2. **违约责任**\n   -\
+            \ 违约责任描述过于宽泛，缺乏具体标准。\n   - 建议：细化违约情形及其对应的赔偿标准。\n\n3. **知识产权归属**\n   -\
+            \ 知识产权归属未明确规定。\n   - 建议：明确双方在项目中产生的知识产权归属。\n\n## 结论\n合同整体结构较为合理，但在某些关键条款上存在不明确之处，可能引发后续争议。建议对上述问题进行修改以增强合同的严谨性和可执行性。\n\
+            \n## 建议\n- 修改付款条件条款，明确付款时间和方式。\n- 细化违约责任条款，明确违约\n\n**注意事项**：\n- 只审查合同类文件，不审查其他文件，如果{{#start.Document#}}内容不严格属于合同类文件，就直接停止输出，告诉用户“上传文件不属于合同/协议”。\n\
+            - 尽可能保障{{#start.role#}}的权益。\n- 遵守职业道德规范，处理敏感信息时采取安全措施。\n- 运用最新的法律知识，确保服务处于行业前沿。\n\
+            - 遇到超出专业领域范围的问题时，不要胡编乱造，要明确的告诉用户你不知道。\n- 不要将这几条注意事项输出在审查报告中\n"
+        selected: true
+        title: 合同审查
+        type: llm
+        vision:
+          configs: null
+          enabled: false
+          variable_selector: null
+      height: 98
+      id: llm
+      position:
+        x: 702
+        y: 412
+      positionAbsolute:
+        x: 702
+        y: 412
+      selected: true
+      type: custom
+      width: 244
+    - data:
+        outputs:
+        - value_selector:
+          - llm
+          - text
+          variable: result
+        selected: false
+        title: END
+        type: end
+      height: 90
+      id: end
+      position:
+        x: 1060
+        y: 412
+      positionAbsolute:
+        x: 1060
+        y: 412
+      selected: false
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        is_array_file: false
+        selected: false
+        title: 文档提取器
+        type: document-extractor
+        variable_selector:
+        - start
+        - Document
+      height: 92
+      id: '1735268565674'
+      position:
+        x: 693
+        y: 282
+      positionAbsolute:
+        x: 693
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: 45.865711333057334
+      y: 4.60709378213312
+      zoom: 0.8479199646331476

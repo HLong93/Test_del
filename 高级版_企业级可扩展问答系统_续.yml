@@ -1,0 +1,449 @@
+# 高级版工作流续 - 剩余节点配置
+
+    - data:
+        desc: '批量数据迭代处理'
+        input_variable_selector:
+        - start
+        - batch_files
+        iteration_node:
+          start_node_id: 'iteration-start'
+          end_node_id: 'iteration-end'
+        selected: false
+        title: 迭代处理器
+        type: iteration
+      height: 118
+      id: iteration-processor
+      position:
+        x: 1550
+        y: 200
+      positionAbsolute:
+        x: 1550
+        y: 200
+      selected: false
+      type: custom
+      width: 244
+    - data:
+        dataset_ids:
+        - primary-knowledge-base-1
+        - primary-knowledge-base-2
+        - primary-knowledge-base-3
+        desc: '主要知识库检索'
+        multiple_retrieval_config:
+          reranking_enable: true
+          reranking_mode: reranking_model
+          reranking_model:
+            model: gte-rerank
+            provider: tongyi
+          score_threshold: 0.3
+          top_k: 10
+        query_variable_selector:
+        - sys
+        - query
+        retrieval_mode: multiple
+        selected: false
+        title: 主知识库检索
+        type: knowledge-retrieval
+      height: 120
+      id: knowledge-retrieval-primary
+      position:
+        x: 1550
+        y: 400
+      positionAbsolute:
+        x: 1550
+        y: 400
+      selected: false
+      type: custom
+      width: 244
+    - data:
+        dataset_ids:
+        - secondary-knowledge-base-1
+        - secondary-knowledge-base-2
+        - domain-specific-kb-1
+        desc: '专业领域知识库检索'
+        multiple_retrieval_config:
+          reranking_enable: true
+          reranking_mode: reranking_model
+          reranking_model:
+            model: gte-rerank
+            provider: tongyi
+          score_threshold: 0.4
+          top_k: 8
+        query_variable_selector:
+        - iteration-processor
+        - item
+        retrieval_mode: multiple
+        selected: false
+        title: 专业知识库检索
+        type: knowledge-retrieval
+      height: 120
+      id: knowledge-retrieval-secondary
+      position:
+        x: 1850
+        y: 200
+      positionAbsolute:
+        x: 1850
+        y: 200
+      selected: false
+      type: custom
+      width: 244
+    - data:
+        desc: '集成外部API和服务'
+        headers:
+          Authorization: 'Bearer {{#env.api_token#}}'
+          Content-Type: 'application/json'
+        method: 'POST'
+        params:
+          query: '{{#sys.query#}}'
+          context: '{{#knowledge-retrieval-primary.result#}}'
+          department: '{{#start.department#}}'
+        selected: false
+        title: 外部API调用
+        type: http-request
+        url: '{{#env.api_base_url#}}/enterprise/query'
+      height: 118
+      id: http-request
+      position:
+        x: 1850
+        y: 400
+      positionAbsolute:
+        x: 1850
+        y: 400
+      selected: false
+      type: custom
+      width: 244
+    - data:
+        code: |
+          import json
+          import re
+          from datetime import datetime
+          
+          def process_enterprise_data(knowledge_data, api_response, user_context):
+              """
+              企业级数据处理逻辑
+              """
+              result = {
+                  'processed_knowledge': [],
+                  'api_insights': [],
+                  'recommendations': [],
+                  'metadata': {
+                      'processing_time': datetime.now().isoformat(),
+                      'data_sources': []
+                  }
+              }
+              
+              # 处理知识库数据
+              if knowledge_data:
+                  for item in knowledge_data:
+                      processed_item = {
+                          'content': item.get('content', ''),
+                          'relevance_score': item.get('score', 0),
+                          'source': item.get('source', 'unknown')
+                      }
+                      result['processed_knowledge'].append(processed_item)
+                      result['metadata']['data_sources'].append(processed_item['source'])
+              
+              # 处理API响应
+              if api_response:
+                  try:
+                      api_data = json.loads(api_response) if isinstance(api_response, str) else api_response
+                      result['api_insights'] = api_data.get('insights', [])
+                  except:
+                      result['api_insights'] = []
+              
+              # 生成推荐
+              if len(result['processed_knowledge']) > 0:
+                  result['recommendations'].append('基于知识库内容，建议进一步查看相关文档')
+              
+              if len(result['api_insights']) > 0:
+                  result['recommendations'].append('外部数据显示相关趋势，建议关注')
+              
+              return result
+          
+          # 主处理逻辑
+          knowledge_data = {{#knowledge-retrieval-primary.result#}}
+          api_response = {{#http-request.body#}}
+          user_context = {
+              'department': '{{#start.department#}}',
+              'priority': '{{#start.priority#}}',
+              'business_type': '{{#start.business_type#}}'
+          }
+          
+          result = process_enterprise_data(knowledge_data, api_response, user_context)
+        desc: '自定义业务逻辑处理'
+        outputs:
+          processed_data:
+            type: object
+        selected: false
+        title: 代码执行器
+        type: code
+      height: 118
+      id: code-executor
+      position:
+        x: 2150
+        y: 300
+      positionAbsolute:
+        x: 2150
+        y: 300
+      selected: false
+      type: custom
+      width: 244
+    - data:
+        desc: 'MCP工具集成'
+        mcp_servers:
+        - server_name: 'zapier-mcp'
+          enabled: true
+          config:
+            api_key: '{{#env.zapier_api_key#}}'
+        - server_name: 'database-mcp'
+          enabled: true
+          config:
+            connection_string: '{{#env.db_connection#}}'
+        - server_name: 'analytics-mcp'
+          enabled: true
+          config:
+            endpoint: '{{#env.analytics_endpoint#}}'
+        selected: false
+        title: MCP工具集成
+        type: mcp-tools
+      height: 118
+      id: mcp-tools
+      position:
+        x: 2450
+        y: 300
+      positionAbsolute:
+        x: 2450
+        y: 300
+      selected: false
+      type: custom
+      width: 244
+    - data:
+        desc: '智能任务编排代理'
+        instruction: |
+          你是企业级智能编排代理，负责协调复杂的业务流程。
+          
+          基于以下信息进行智能决策：
+          - 代码处理结果：{{#code-executor.processed_data#}}
+          - MCP工具输出：{{#mcp-tools.result#}}
+          - 用户上下文：{{#start.department#}} - {{#start.priority#}}
+          
+          请执行以下任务：
+          1. 分析所有数据源的一致性
+          2. 识别潜在的业务风险或机会
+          3. 制定最优的响应策略
+          4. 如需要，调用额外的企业工具
+          5. 准备结构化的输出格式
+        model:
+          completion_params:
+            temperature: 0.2
+            max_tokens: 2000
+          mode: chat
+          name: qwen-max
+          provider: tongyi
+        selected: false
+        title: 智能编排代理
+        tools:
+        - enabled: true
+          tool_name: 'enterprise_calculator'
+        - enabled: true
+          tool_name: 'data_validator'
+        - enabled: true
+          tool_name: 'report_generator'
+        - enabled: true
+          tool_name: 'workflow_optimizer'
+        type: agent
+      height: 118
+      id: agent-orchestrator
+      position:
+        x: 2750
+        y: 300
+      positionAbsolute:
+        x: 2750
+        y: 300
+      selected: false
+      type: custom
+      width: 244
+    - data:
+        desc: '企业级数据聚合'
+        groups:
+        - group_name: '知识库结果'
+          variables:
+          - variable_selector:
+            - knowledge-retrieval-primary
+            - result
+          - variable_selector:
+            - knowledge-retrieval-secondary
+            - result
+        - group_name: '外部数据'
+          variables:
+          - variable_selector:
+            - http-request
+            - body
+        - group_name: '处理结果'
+          variables:
+          - variable_selector:
+            - code-executor
+            - processed_data
+        - group_name: 'MCP输出'
+          variables:
+          - variable_selector:
+            - mcp-tools
+            - result
+        - group_name: '代理决策'
+          variables:
+          - variable_selector:
+            - agent-orchestrator
+            - result
+        - group_name: '文档内容'
+          variables:
+          - variable_selector:
+            - document-extractor
+            - text
+        selected: false
+        title: 企业数据聚合
+        type: variable-aggregator
+      height: 118
+      id: variable-aggregator
+      position:
+        x: 3050
+        y: 300
+      positionAbsolute:
+        x: 3050
+        y: 300
+      selected: false
+      type: custom
+      width: 244
+    - data:
+        desc: '格式化输出模板'
+        template: |
+          # 企业智能问答系统回复
+          
+          ## 查询信息
+          - **部门**: {{#start.department#}}
+          - **优先级**: {{#start.priority#}}
+          - **业务类型**: {{#start.business_type#}}
+          - **问题分类**: {{#question-classifier.class_name#}}
+          
+          ## 分析结果
+          {{#variable-aggregator.知识库结果#}}
+          
+          ## 外部数据洞察
+          {{#variable-aggregator.外部数据#}}
+          
+          ## 智能推荐
+          {{#variable-aggregator.代理决策#}}
+          
+          ## 处理详情
+          - **数据源**: {{#variable-aggregator.处理结果.metadata.data_sources#}}
+          - **处理时间**: {{#variable-aggregator.处理结果.metadata.processing_time#}}
+          
+          ## 后续建议
+          {{#variable-aggregator.处理结果.recommendations#}}
+        selected: false
+        title: 模板转换器
+        type: template
+        variables:
+        - variable_selector:
+          - variable-aggregator
+          - output
+      height: 118
+      id: template-transformer
+      position:
+        x: 3350
+        y: 300
+      positionAbsolute:
+        x: 3350
+        y: 300
+      selected: false
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - template-transformer
+          - output
+        desc: '企业级最终回答生成'
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: '企业AI助手: '
+            user: '用户: '
+          window:
+            enabled: true
+            size: 20
+        model:
+          completion_params:
+            temperature: 0.4
+            max_tokens: 4000
+          mode: chat
+          name: qwen-vl-max
+          provider: tongyi
+        prompt_template:
+        - id: system-prompt
+          role: system
+          text: |
+            你是一个企业级智能助手，具备以下核心能力：
+            
+            1. **专业性**: 深度理解企业业务流程和需求
+            2. **准确性**: 基于可靠数据源提供精确信息
+            3. **实用性**: 提供可执行的解决方案和建议
+            4. **安全性**: 遵守企业数据安全和隐私规范
+            5. **可扩展性**: 支持复杂业务场景和集成需求
+            
+            基于模板化数据：{{#context#}}
+            
+            请提供：
+            - 结构化的专业回答
+            - 详细的操作指导
+            - 相关的图表或数据可视化建议
+            - 风险评估和注意事项
+            - 后续行动建议
+            
+            保持回答的专业性、准确性和实用性。
+        - id: user-prompt
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        title: 企业级回答生成
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+            variable_selector:
+            - start
+            - multimedia_files
+          enabled: true
+      height: 98
+      id: llm-final
+      position:
+        x: 3650
+        y: 300
+      positionAbsolute:
+        x: 3650
+        y: 300
+      selected: false
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#llm-final.text#}}'
+        desc: '输出企业级智能回答'
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 102
+      id: answer
+      position:
+        x: 3950
+        y: 300
+      positionAbsolute:
+        x: 3950
+        y: 300
+      selected: false
+      type: custom
+      width: 244
+    viewport:
+      x: 0
+      y: 0
+      zoom: 0.4

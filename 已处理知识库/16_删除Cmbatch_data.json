@@ -1,0 +1,47 @@
+{
+  "original_file": "待处理知识库\\SRMS Support\\删除Cmbatch.docx",
+  "qa_pairs": [
+    {
+      "question": "相关问题",
+      "answer": "文档来源：删除Cmbatch\n\n只有当Batch是Open 状态时候，才会删除。\n用以下SQL检查Batch状态，和对应数据的POST状态\n如果其他关联表没有任何数据，则直接删除cmbtch\nDelete from cmbtch where cmbatchid = ‘xxxxxxx’\n如果有关联数据，则看关联数据是否已经post。如果在临时表才可以删除\n临时表：cmrcpt ,recpt, cmmisc, cmbnont，cmvoidreceipt\n确认在临时表后，先删除临时表数据，再删除cmbtch",
+      "keywords": [
+        "只有当",
+        "状态时候",
+        "如果其他关联表没有任何数据",
+        "Batch",
+        "用以下",
+        "确认在临时表后",
+        "删除",
+        "则看关联数据是否已经",
+        "和对应数据的",
+        "临时表",
+        "则直接删除",
+        "SQL",
+        "如果有关联数据"
+      ],
+      "source": "文档来源：删除Cmbatch",
+      "type": "text"
+    }
+  ],
+  "raw_content": {
+    "title": "删除Cmbatch",
+    "source_file": "待处理知识库\\SRMS Support\\删除Cmbatch.docx",
+    "type": "word",
+    "sections": [
+      {
+        "heading": "",
+        "content": "只有当Batch是Open 状态时候，才会删除。\n用以下SQL检查Batch状态，和对应数据的POST状态\n如果其他关联表没有任何数据，则直接删除cmbtch\nDelete from cmbtch where cmbatchid = ‘xxxxxxx’\n如果有关联数据，则看关联数据是否已经post。如果在临时表才可以删除\n临时表：cmrcpt ,recpt, cmmisc, cmbnont，cmvoidreceipt\n确认在临时表后，先删除临时表数据，再删除cmbtch\n",
+        "tables": [
+          {
+            "headers": [
+              "select \n    (select count(*) from CMLEDG (nolock) where cmbatchid = cmbtch.cmbatchid) as CMLEDG\n    ,(select count(*) from cmledgapply (nolock) where tranid in (select tranid from cmledg where cmbatchid = cmbtch.cmbatchid)) as ledgapply_tranid_count\n    ,(select count(*) from cmledgapply (nolock) where ptranid in (select tranid from cmledg where cmbatchid = cmbtch.cmbatchid)) as ledgapply_ptranid_count\n    ,(select count(*) from cmbnont (nolock) where cmbatchid = cmbtch.cmbatchid) as cmbnont\n\t,(select count(*) from cmsdlg (nolock) where cmbatchid = cmbtch.cmbatchid) as cmsdlg\n    ,(select count(*) from cmrcpt (nolock) where cmbatchid = cmbtch.cmbatchid) as cmrcpt\n    ,(select count(*) from recpt (nolock) where cmbatchid = cmbtch.cmbatchid) as recpt\n    ,(select count(*) from cmmisc (nolock) where cmbatchid = cmbtch.cmbatchid) as cmmisc\n    ,(select count(*) from cmnont (nolock) where cmbatchid = cmbtch.cmbatchid) as cmnont\n    ,(select count(*) from CMDEPOSIT (nolock) where cmbatchid = cmbtch.cmbatchid) as CMDEPOSIT\n    ,(select count(*) from cmvoidreceipt (nolock) where cmbatchid = cmbtch.cmbatchid) as cmvoidreceipt\n\t,(select count(*) from CMSDADJ (nolock) where cmbatchid = cmbtch.cmbatchid) as CMSDADJ\n    ,cmbtch.*\nfrom cmbtch\nleft join proj b on b.siteid = left(cmbtch.cmbatchid,2)\nwhere cmbtch.cmbatchid IN ('TJ717073')"
+            ],
+            "rows": []
+          }
+        ],
+        "images": []
+      }
+    ],
+    "images": []
+  }
+}

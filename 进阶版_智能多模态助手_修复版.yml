@@ -1,0 +1,491 @@
+app:
+  description: '进阶版智能多模态助手，支持复杂逻辑处理、工具调用和智能代理功能'
+  icon: 🧠
+  icon_background: '#E3F2FD'
+  mode: advanced-chat
+  name: 进阶版智能多模态助手
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.1.5
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .txt
+      - .md
+      - .pdf
+      - .docx
+      - .xlsx
+      - .pptx
+      - .jpg
+      - .jpeg
+      - .png
+      - .gif
+      - .webp
+      - .svg
+      - .mp3
+      - .wav
+      - .m4a
+      - .mp4
+      - .avi
+      - .mov
+      allowed_file_types:
+      - document
+      - image
+      - audio
+      - video
+      allowed_file_upload_methods:
+      - remote_url
+      - local_file
+      enabled: true
+      image:
+        enabled: true
+        number_limits: 10
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 15
+    opening_statement: 您好！我是进阶版智能多模态助手，具备强大的文档处理、图像识别、语音转换和智能推理能力。我可以调用多种工具来为您提供更精准的服务。请告诉我您需要什么帮助？
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: true
+    speech_to_text:
+      enabled: true
+    suggested_questions:
+    - 分析这个文档的主要内容
+    - 帮我识别图片中的文字
+    - 解决SRMS系统登录问题
+    - 生成操作步骤的总结
+    suggested_questions_after_answer:
+      enabled: true
+    text_to_speech:
+      enabled: true
+      language: 'zh-CN'
+      voice: 'nova'
+  graph:
+    edges:
+    - data:
+        sourceType: start
+        targetType: document-extractor
+      id: 1752659131948-1752659131949
+      source: '1752659131948'
+      sourceHandle: source
+      target: '1752659131949'
+      targetHandle: target
+      type: custom
+    - data:
+        isInIteration: false
+        sourceType: document-extractor
+        targetType: question-classifier
+      id: 1752659131949-1752659131950
+      source: '1752659131949'
+      sourceHandle: source
+      target: '1752659131950'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: question-classifier
+        targetType: if-else
+      id: 1752659131950-1752659131951
+      source: '1752659131950'
+      sourceHandle: source
+      target: '1752659131951'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: knowledge-retrieval
+      id: 1752659131951-1752659371747
+      source: '1752659131951'
+      sourceHandle: 'true'
+      target: '1752659371747'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: tool
+      id: 1752659131951-1752659131952
+      source: '1752659131951'
+      sourceHandle: 'false'
+      target: '1752659131952'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: knowledge-retrieval
+        targetType: variable-aggregator
+      id: 1752659371747-1752659131953
+      source: '1752659371747'
+      sourceHandle: source
+      target: '1752659131953'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: tool
+        targetType: variable-aggregator
+      id: 1752659131952-1752659131953
+      source: '1752659131952'
+      sourceHandle: source
+      target: '1752659131953'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: variable-aggregator
+        targetType: llm
+      id: 1752659131953-1752659389172
+      source: '1752659131953'
+      sourceHandle: source
+      target: '1752659389172'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: answer
+      id: 1752659389172-answer
+      source: '1752659389172'
+      sourceHandle: source
+      target: answer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: '处理多模态输入并支持批量文件上传'
+        selected: false
+        title: 开始
+        type: start
+        variables:
+        - label: 用户问题
+          max_length: 2000
+          options: []
+          required: false
+          type: paragraph
+          variable: user_query
+        - label: 问题类型
+          options:
+          - 技术支持
+          - 文档分析
+          - 图像处理
+          - 数据查询
+          - 其他
+          required: false
+          type: select
+          variable: question_type
+        - label: 上传文件
+          allowed_file_extensions:
+          - .txt
+          - .md
+          - .pdf
+          - .docx
+          - .xlsx
+          - .pptx
+          allowed_file_types:
+          - document
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          max_length: 15
+          required: false
+          type: file-list
+          variable: uploaded_files
+      height: 116
+      id: '1752659131948'
+      position:
+        x: 50
+        y: 200
+      positionAbsolute:
+        x: 50
+        y: 200
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: '提取多种格式文件的内容'
+        is_array_file: true
+        selected: false
+        title: 文档提取器
+        type: document-extractor
+        variable_selector:
+        - '1752659131948'
+        - uploaded_files
+      height: 92
+      id: '1752659131949'
+      position:
+        x: 350
+        y: 200
+      positionAbsolute:
+        x: 350
+        y: 200
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        classes:
+        - class_name: 知识查询
+          id: knowledge_query
+        - class_name: 文档分析
+          id: document_analysis
+        - class_name: 图像识别
+          id: image_recognition
+        - class_name: 技术支持
+          id: tech_support
+        - class_name: 数据处理
+          id: data_processing
+        - class_name: 工具调用
+          id: tool_calling
+        - class_name: 复合任务
+          id: complex_task
+        desc: '智能分类用户意图，支持更多场景'
+        instruction: '请仔细分析用户的问题和上传的文件类型，将问题分类到最合适的处理类别中。考虑问题的复杂度和所需的处理方式。'
+        model:
+          completion_params:
+            temperature: 0.1
+          mode: chat
+          name: qwen-turbo
+          provider: tongyi
+        query_variable_selector:
+        - sys
+        - query
+        selected: false
+        title: 智能问题分类
+        type: question-classifier
+      height: 118
+      id: '1752659131950'
+      position:
+        x: 650
+        y: 200
+      positionAbsolute:
+        x: 650
+        y: 200
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        conditions:
+        - comparison_operator: 'in'
+          id: condition1
+          logical_operator: 'and'
+          variable_selector:
+          - '1752659131950'
+          - class_name
+          value: 'knowledge_query,tech_support'
+        desc: '根据问题类型选择处理路径'
+        logical_operator: 'and'
+        selected: false
+        title: 条件分支
+        type: if-else
+      height: 126
+      id: '1752659131951'
+      position:
+        x: 950
+        y: 200
+      positionAbsolute:
+        x: 950
+        y: 200
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        dataset_ids:
+        - fcf795ab-5d89-4640-b275-a2d77e2f11d3
+        - 49b4d49c-03c3-4050-9e0d-52ca722b55c9
+        desc: '从多个知识库检索相关内容'
+        multiple_retrieval_config:
+          reranking_enable: true
+          reranking_mode: reranking_model
+          reranking_model:
+            model: gte-rerank
+            provider: tongyi
+          score_threshold: 0.4
+          top_k: 8
+        query_variable_selector:
+        - sys
+        - query
+        retrieval_mode: multiple
+        selected: false
+        title: 知识检索
+        type: knowledge-retrieval
+      height: 120
+      id: '1752659371747'
+      position:
+        x: 1250
+        y: 100
+      positionAbsolute:
+        x: 1250
+        y: 100
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: '调用内置工具进行专业处理'
+        provider_id: 'builtin'
+        provider_type: 'builtin'
+        selected: false
+        title: 工具调用
+        tool_name: 'web_scraper'
+        type: tool
+      height: 118
+      id: '1752659131952'
+      position:
+        x: 1250
+        y: 300
+      positionAbsolute:
+        x: 1250
+        y: 300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: '整合多个数据源的结果'
+        groups:
+        - group_name: '检索结果'
+          variables:
+          - variable_selector:
+            - '1752659371747'
+            - result
+        - group_name: '工具结果'
+          variables:
+          - variable_selector:
+            - '1752659131952'
+            - result
+        - group_name: '文档内容'
+          variables:
+          - variable_selector:
+            - '1752659131949'
+            - text
+        selected: false
+        title: 变量聚合
+        type: variable-aggregator
+      height: 118
+      id: '1752659131953'
+      position:
+        x: 1550
+        y: 200
+      positionAbsolute:
+        x: 1550
+        y: 200
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1752659131953'
+          - output
+        desc: '生成最终的智能回答'
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: true
+            size: 15
+        model:
+          completion_params:
+            temperature: 0.6
+            max_tokens: 3000
+          mode: chat
+          name: qwen-vl-max
+          provider: tongyi
+        prompt_template:
+        - edition_type: basic
+          id: 7b1c4a52-795e-4abb-93f7-dba569ea3a64
+          role: system
+          text: |
+            你是一个高级智能助手，具备强大的多模态处理能力。
+
+            基于聚合的信息：{{#context#}}
+
+            请为用户提供：
+            1. 准确、详细的回答
+            2. 如有操作步骤，请清晰列出
+            3. 适当引用相关图片或文档
+            4. 提供实用的建议和解决方案
+            5. 保持专业和友好的语调
+
+            问题分类：{{#1752659131950.class_name#}}
+            处理路径：{{#1752659131951.result#}}
+        - edition_type: basic
+          id: user-prompt
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        title: 最终回答生成
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+            variable_selector:
+            - sys
+            - files
+          enabled: true
+      height: 98
+      id: '1752659389172'
+      position:
+        x: 1850
+        y: 200
+      positionAbsolute:
+        x: 1850
+        y: 200
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1752659389172.text#}}'
+        desc: '输出最终的智能回答'
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 102
+      id: answer
+      position:
+        x: 2150
+        y: 200
+      positionAbsolute:
+        x: 2150
+        y: 200
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: 0
+      y: 0
+      zoom: 0.6

@@ -1,0 +1,28 @@
+{
+  "original_file": "待处理知识库\\SRMS Support\\Update Batch Description 更新批次備註.docx",
+  "qa_pairs": [
+    {
+      "question": "相关问题",
+      "answer": "文档来源：Update Batch Description 更新批次備註\n\nupdate cmbtch set descrptn = '21 Dec 2024 Cash (B10C)' where cmbatchid = 'OC719160'",
+      "keywords": [
+        "Batch"
+      ],
+      "source": "文档来源：Update Batch Description 更新批次備註",
+      "type": "text"
+    }
+  ],
+  "raw_content": {
+    "title": "Update Batch Description 更新批次備註",
+    "source_file": "待处理知识库\\SRMS Support\\Update Batch Description 更新批次備註.docx",
+    "type": "word",
+    "sections": [
+      {
+        "heading": "",
+        "content": "update cmbtch set descrptn = '21 Dec 2024 Cash (B10C)' where cmbatchid = 'OC719160'\n",
+        "tables": [],
+        "images": []
+      }
+    ],
+    "images": []
+  }
+}

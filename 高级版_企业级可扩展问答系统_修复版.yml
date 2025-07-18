@@ -1,0 +1,691 @@
+app:
+  description: '高级版企业级可扩展问答系统，支持复杂业务逻辑、多知识库、HTTP请求和高度可扩展架构'
+  icon: 🚀
+  icon_background: '#F3E5F5'
+  mode: advanced-chat
+  name: 高级版企业级可扩展问答系统
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.1.5
+workflow:
+  conversation_variables:
+  - id: user_context
+    name: 用户上下文
+    value_type: object
+    description: 存储用户的历史交互信息
+  environment_variables:
+  - id: api_base_url
+    name: API基础URL
+    value: 'https://api.example.com'
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .txt
+      - .md
+      - .pdf
+      - .docx
+      - .xlsx
+      - .pptx
+      - .csv
+      - .json
+      - .jpg
+      - .jpeg
+      - .png
+      - .gif
+      - .webp
+      - .svg
+      - .mp3
+      - .wav
+      - .mp4
+      - .avi
+      allowed_file_types:
+      - document
+      - image
+      - audio
+      - video
+      allowed_file_upload_methods:
+      - remote_url
+      - local_file
+      enabled: true
+      image:
+        enabled: true
+        number_limits: 20
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 50
+    opening_statement: |
+      欢迎使用企业级智能问答系统！
+      
+      我是您的专业AI助手，具备以下核心能力：
+      ✨ 多模态内容处理（文本、图片、音频、视频）
+      🔍 智能知识库检索与分析
+      🛠️ 丰富的工具集成和API调用
+      🧠 复杂业务逻辑处理
+      📊 数据分析与报告生成
+      🔄 可扩展的企业级架构
+      
+      请告诉我您需要什么帮助，或上传相关文件开始对话。
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: true
+    speech_to_text:
+      enabled: true
+    suggested_questions:
+    - 分析这份企业报告的关键指标
+    - 帮我处理这批客户数据
+    - 生成系统操作的标准流程
+    - 集成外部API获取实时数据
+    - 创建自动化工作流程
+    suggested_questions_after_answer:
+      enabled: true
+    text_to_speech:
+      enabled: true
+      language: 'zh-CN'
+      voice: 'onyx'
+  graph:
+    edges:
+    - data:
+        sourceType: start
+        targetType: document-extractor
+      id: 1752659131948-1752659131949
+      source: '1752659131948'
+      sourceHandle: source
+      target: '1752659131949'
+      targetHandle: target
+      type: custom
+    - data:
+        isInIteration: false
+        sourceType: document-extractor
+        targetType: question-classifier
+      id: 1752659131949-1752659131950
+      source: '1752659131949'
+      sourceHandle: source
+      target: '1752659131950'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: question-classifier
+        targetType: if-else
+      id: 1752659131950-1752659131951
+      source: '1752659131950'
+      sourceHandle: source
+      target: '1752659131951'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: knowledge-retrieval
+      id: 1752659131951-1752659371747
+      source: '1752659131951'
+      sourceHandle: 'true'
+      target: '1752659371747'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: knowledge-retrieval
+      id: 1752659131951-1752659371748
+      source: '1752659131951'
+      sourceHandle: 'false'
+      target: '1752659371748'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: knowledge-retrieval
+        targetType: http-request
+      id: 1752659371747-1752659131952
+      source: '1752659371747'
+      sourceHandle: source
+      target: '1752659131952'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: knowledge-retrieval
+        targetType: http-request
+      id: 1752659371748-1752659131952
+      source: '1752659371748'
+      sourceHandle: source
+      target: '1752659131952'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: http-request
+        targetType: code
+      id: 1752659131952-1752659131953
+      source: '1752659131952'
+      sourceHandle: source
+      target: '1752659131953'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: variable-aggregator
+      id: 1752659131953-1752659131954
+      source: '1752659131953'
+      sourceHandle: source
+      target: '1752659131954'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: variable-aggregator
+        targetType: llm
+      id: 1752659131954-1752659389172
+      source: '1752659131954'
+      sourceHandle: source
+      target: '1752659389172'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: answer
+      id: 1752659389172-answer
+      source: '1752659389172'
+      sourceHandle: source
+      target: answer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: '企业级多模态输入处理'
+        selected: false
+        title: 开始
+        type: start
+        variables:
+        - label: 用户查询
+          max_length: 5000
+          options: []
+          required: false
+          type: paragraph
+          variable: user_query
+        - label: 业务类型
+          options:
+          - 技术支持
+          - 数据分析
+          - 流程优化
+          - 系统集成
+          - 报告生成
+          - 知识管理
+          - 其他
+          required: false
+          type: select
+          variable: business_type
+        - label: 优先级
+          options:
+          - 高
+          - 中
+          - 低
+          required: false
+          type: select
+          variable: priority
+        - label: 部门
+          max_length: 100
+          options: []
+          required: false
+          type: text
+          variable: department
+        - label: 批量文件
+          allowed_file_extensions:
+          - .txt
+          - .md
+          - .pdf
+          - .docx
+          - .xlsx
+          - .pptx
+          - .csv
+          - .json
+          allowed_file_types:
+          - document
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          max_length: 50
+          required: false
+          type: file-list
+          variable: batch_files
+      height: 116
+      id: '1752659131948'
+      position:
+        x: 50
+        y: 300
+      positionAbsolute:
+        x: 50
+        y: 300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: '高级文档处理和内容提取'
+        is_array_file: true
+        selected: false
+        title: 文档提取器
+        type: document-extractor
+        variable_selector:
+        - '1752659131948'
+        - batch_files
+      height: 92
+      id: '1752659131949'
+      position:
+        x: 350
+        y: 300
+      positionAbsolute:
+        x: 350
+        y: 300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        classes:
+        - class_name: 复杂数据分析
+          id: complex_analysis
+        - class_name: 多系统集成
+          id: system_integration
+        - class_name: 批量处理任务
+          id: batch_processing
+        - class_name: 实时查询
+          id: realtime_query
+        - class_name: 报告生成
+          id: report_generation
+        - class_name: 工作流自动化
+          id: workflow_automation
+        - class_name: 知识库管理
+          id: knowledge_management
+        - class_name: 技术支持
+          id: technical_support
+        - class_name: 业务咨询
+          id: business_consulting
+        desc: '企业级多层次问题分类'
+        instruction: |
+          基于用户的业务类型{{#1752659131948.business_type#}}和优先级{{#1752659131948.priority#}}，
+          进行精确的问题分类。考虑：
+          1. 任务复杂度
+          2. 所需资源类型
+          3. 处理优先级
+          4. 业务影响范围
+        model:
+          completion_params:
+            temperature: 0.05
+          mode: chat
+          name: qwen-max
+          provider: tongyi
+        query_variable_selector:
+        - sys
+        - query
+        selected: false
+        title: 企业级问题分类
+        type: question-classifier
+      height: 118
+      id: '1752659131950'
+      position:
+        x: 650
+        y: 300
+      positionAbsolute:
+        x: 650
+        y: 300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        conditions:
+        - comparison_operator: 'in'
+          id: condition1
+          logical_operator: 'and'
+          variable_selector:
+          - '1752659131950'
+          - class_name
+          value: 'complex_analysis,system_integration,batch_processing'
+        desc: '根据任务复杂度选择处理策略'
+        logical_operator: 'and'
+        selected: false
+        title: 主要条件分支
+        type: if-else
+      height: 126
+      id: '1752659131951'
+      position:
+        x: 950
+        y: 300
+      positionAbsolute:
+        x: 950
+        y: 300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        dataset_ids:
+        - fcf795ab-5d89-4640-b275-a2d77e2f11d3
+        - 49b4d49c-03c3-4050-9e0d-52ca722b55c9
+        desc: '主要知识库检索'
+        multiple_retrieval_config:
+          reranking_enable: true
+          reranking_mode: reranking_model
+          reranking_model:
+            model: gte-rerank
+            provider: tongyi
+          score_threshold: 0.3
+          top_k: 10
+        query_variable_selector:
+        - sys
+        - query
+        retrieval_mode: multiple
+        selected: false
+        title: 主知识库检索
+        type: knowledge-retrieval
+      height: 120
+      id: '1752659371747'
+      position:
+        x: 1250
+        y: 200
+      positionAbsolute:
+        x: 1250
+        y: 200
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        dataset_ids:
+        - secondary-knowledge-base-1
+        - domain-specific-kb-1
+        desc: '专业领域知识库检索'
+        multiple_retrieval_config:
+          reranking_enable: true
+          reranking_mode: reranking_model
+          reranking_model:
+            model: gte-rerank
+            provider: tongyi
+          score_threshold: 0.4
+          top_k: 8
+        query_variable_selector:
+        - sys
+        - query
+        retrieval_mode: multiple
+        selected: false
+        title: 专业知识库检索
+        type: knowledge-retrieval
+      height: 120
+      id: '1752659371748'
+      position:
+        x: 1250
+        y: 400
+      positionAbsolute:
+        x: 1250
+        y: 400
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: '集成外部API和服务'
+        headers:
+          Content-Type: 'application/json'
+        method: 'POST'
+        params:
+          query: '{{#sys.query#}}'
+          department: '{{#1752659131948.department#}}'
+          priority: '{{#1752659131948.priority#}}'
+        selected: false
+        title: 外部API调用
+        type: http-request
+        url: 'https://api.example.com/enterprise/query'
+      height: 118
+      id: '1752659131952'
+      position:
+        x: 1550
+        y: 300
+      positionAbsolute:
+        x: 1550
+        y: 300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: |
+          import json
+          from datetime import datetime
+
+          def process_enterprise_data(knowledge_data, api_response, user_context):
+              """
+              企业级数据处理逻辑
+              """
+              result = {
+                  'processed_knowledge': [],
+                  'api_insights': [],
+                  'recommendations': [],
+                  'metadata': {
+                      'processing_time': datetime.now().isoformat(),
+                      'data_sources': []
+                  }
+              }
+
+              # 处理知识库数据
+              if knowledge_data:
+                  for item in knowledge_data:
+                      processed_item = {
+                          'content': item.get('content', ''),
+                          'relevance_score': item.get('score', 0),
+                          'source': item.get('source', 'unknown')
+                      }
+                      result['processed_knowledge'].append(processed_item)
+                      result['metadata']['data_sources'].append(processed_item['source'])
+
+              # 处理API响应
+              if api_response:
+                  try:
+                      api_data = json.loads(api_response) if isinstance(api_response, str) else api_response
+                      result['api_insights'] = api_data.get('insights', [])
+                  except:
+                      result['api_insights'] = []
+
+              # 生成推荐
+              if len(result['processed_knowledge']) > 0:
+                  result['recommendations'].append('基于知识库内容，建议进一步查看相关文档')
+
+              return result
+
+          # 主处理逻辑
+          knowledge_data = {{#1752659371747.result#}}
+          api_response = {{#1752659131952.body#}}
+          user_context = {
+              'department': '{{#1752659131948.department#}}',
+              'priority': '{{#1752659131948.priority#}}',
+              'business_type': '{{#1752659131948.business_type#}}'
+          }
+
+          result = process_enterprise_data(knowledge_data, api_response, user_context)
+        desc: '自定义业务逻辑处理'
+        outputs:
+          processed_data:
+            type: object
+        selected: false
+        title: 代码执行器
+        type: code
+      height: 118
+      id: '1752659131953'
+      position:
+        x: 1850
+        y: 300
+      positionAbsolute:
+        x: 1850
+        y: 300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: '企业级数据聚合'
+        groups:
+        - group_name: '知识库结果'
+          variables:
+          - variable_selector:
+            - '1752659371747'
+            - result
+          - variable_selector:
+            - '1752659371748'
+            - result
+        - group_name: '外部数据'
+          variables:
+          - variable_selector:
+            - '1752659131952'
+            - body
+        - group_name: '处理结果'
+          variables:
+          - variable_selector:
+            - '1752659131953'
+            - processed_data
+        - group_name: '文档内容'
+          variables:
+          - variable_selector:
+            - '1752659131949'
+            - text
+        selected: false
+        title: 企业数据聚合
+        type: variable-aggregator
+      height: 118
+      id: '1752659131954'
+      position:
+        x: 2150
+        y: 300
+      positionAbsolute:
+        x: 2150
+        y: 300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1752659131954'
+          - output
+        desc: '企业级最终回答生成'
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: '企业AI助手: '
+            user: '用户: '
+          window:
+            enabled: true
+            size: 20
+        model:
+          completion_params:
+            temperature: 0.4
+            max_tokens: 4000
+          mode: chat
+          name: qwen-vl-max
+          provider: tongyi
+        prompt_template:
+        - edition_type: basic
+          id: 7b1c4a52-795e-4abb-93f7-dba569ea3a65
+          role: system
+          text: |
+            你是一个企业级智能助手，具备以下核心能力：
+
+            1. **专业性**: 深度理解企业业务流程和需求
+            2. **准确性**: 基于可靠数据源提供精确信息
+            3. **实用性**: 提供可执行的解决方案和建议
+            4. **安全性**: 遵守企业数据安全和隐私规范
+            5. **可扩展性**: 支持复杂业务场景和集成需求
+
+            基于聚合数据：{{#context#}}
+
+            请提供：
+            - 结构化的专业回答
+            - 详细的操作指导
+            - 相关的图表或数据可视化建议
+            - 风险评估和注意事项
+            - 后续行动建议
+
+            用户信息：
+            - 部门：{{#1752659131948.department#}}
+            - 优先级：{{#1752659131948.priority#}}
+            - 业务类型：{{#1752659131948.business_type#}}
+            - 问题分类：{{#1752659131950.class_name#}}
+
+            保持回答的专业性、准确性和实用性。
+        - edition_type: basic
+          id: user-prompt
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        title: 企业级回答生成
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+            variable_selector:
+            - sys
+            - files
+          enabled: true
+      height: 98
+      id: '1752659389172'
+      position:
+        x: 2450
+        y: 300
+      positionAbsolute:
+        x: 2450
+        y: 300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1752659389172.text#}}'
+        desc: '输出企业级智能回答'
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 102
+      id: answer
+      position:
+        x: 2750
+        y: 300
+      positionAbsolute:
+        x: 2750
+        y: 300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: 0
+      y: 0
+      zoom: 0.4

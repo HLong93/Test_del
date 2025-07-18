@@ -1,0 +1,85 @@
+{
+  "original_file": "待处理知识库\\SRMS Support\\帮小区重新列印DemandNote.docx",
+  "qa_pairs": [
+    {
+      "question": "相关问题",
+      "answer": "文档来源：帮小区重新列印DemandNote\n\n直接重印（参数USERID，从PROJ表根据PROJID查询获取到）\nselect SITE_USERID from PROJ where projid = '50332'\n更新Autopay再重印",
+      "keywords": [
+        "直接重印",
+        "参数",
+        "更新",
+        "表根据",
+        "查询获取到",
+        "再重印"
+      ],
+      "source": "文档来源：帮小区重新列印DemandNote",
+      "type": "text"
+    },
+    {
+      "question": "[数字].[数字] 备份openamt （参数BU，和对应PERIOD）",
+      "answer": "文档来源：帮小区重新列印DemandNote\n\n更新对应小区MRIEVENT任务（参数 USERID，和NEXTEVENT小于当前时间），如果小区指定列印某一栋，则只更新某一栋就行。\n列印完成后，需要将Openamt还原",
+      "keywords": [
+        "任务",
+        "列印",
+        "参数",
+        "更新对应小区",
+        "更新",
+        "需要将",
+        "则只更新某一栋就行",
+        "小于当前时间",
+        "还原",
+        "列印完成后",
+        "如果小区指定列印某一栋",
+        "IE"
+      ],
+      "source": "文档来源：帮小区重新列印DemandNote",
+      "type": "text"
+    }
+  ],
+  "raw_content": {
+    "title": "帮小区重新列印DemandNote",
+    "source_file": "待处理知识库\\SRMS Support\\帮小区重新列印DemandNote.docx",
+    "type": "word",
+    "sections": [
+      {
+        "heading": "",
+        "content": "直接重印（参数USERID，从PROJ表根据PROJID查询获取到）\nselect SITE_USERID from PROJ where projid = '50332'\n更新Autopay再重印\n",
+        "tables": [
+          {
+            "headers": [
+              "select * from mrievent where userid = 'CFT-CGPV' and eventstatus = 'ACT' and name like '%Demand Note%'\nupdate mrievent set NEXTEVENT = '20241228 19:30:00' where userid = 'SINS-S5PV' and eventstatus = 'ACT' and name like '%Demand Note%'"
+            ],
+            "rows": []
+          }
+        ],
+        "images": []
+      },
+      {
+        "heading": "2.1 备份openamt （参数BU，和对应PERIOD）",
+        "content": "更新对应小区MRIEVENT任务（参数 USERID，和NEXTEVENT小于当前时间），如果小区指定列印某一栋，则只更新某一栋就行。\n列印完成后，需要将Openamt还原\n",
+        "tables": [
+          {
+            "headers": [
+              "update cmledg set ddebitamt = openamt, openamt = tranamt where BLDGID in(select BLDGID from BLDG where ENTITYID in (select ENTITYID from ENTITY where PROJID = '50332'))\nand PERIOD = '202501' and PROGNAME = 'CMRentup' and openamt = 0"
+            ],
+            "rows": []
+          },
+          {
+            "headers": [
+              "select * from mrievent where userid = 'CFT-CGPV' and eventstatus = 'ACT' and name like '%Demand Note%'\n\nupdate mrievent set NEXTEVENT = '20241228 19:30:00' where userid = 'SINS-S5PV' and eventstatus = 'ACT' and name like '%Demand Note%'"
+            ],
+            "rows": []
+          },
+          {
+            "headers": [
+              "update cmledg set openamt = ddebitamt, ddebitamt = null where BLDGID in(select BLDGID from BLDG where ENTITYID in (select ENTITYID from ENTITY where PROJID = '50329')) and PERIOD = '202501' and PROGNAME = 'CMRentup' and ddebitamt is not null"
+            ],
+            "rows": []
+          }
+        ],
+        "images": []
+      }
+    ],
+    "images": []
+  }
+}

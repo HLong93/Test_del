@@ -1,0 +1,35 @@
+{
+  "original_file": "待处理知识库\\SRMS Support\\Site Max Login加大小区登录限制.docx",
+  "qa_pairs": [
+    {
+      "question": "相关问题",
+      "answer": "文档来源：Site Max Login加大小区登录限制\n\n查询小区最大登录限制，按照需要进行更新\nselect SITE_MAX_LOGON from proj where projid = '50397'\nupdate proj set SITE_MAX_LOGON = 5 where projid = '50397'\n查询正在登录的用户列表\n-- current login user\nselect * from MRI_Current_Sessions(nolock) where LOGOUT_TIME IS NULL order by uSERID asc,start_time asc\n超出150最大限制清理\nupdate MRI_Current_Sessions set LOGOUT_TIME = getdate() where LOGOUT_TIME IS NULL and LOGOUT_REASON is not null",
+      "keywords": [
+        "查询正在登录的用户列表",
+        "超出",
+        "最大限制清理",
+        "更新",
+        "按照需要进行更新",
+        "Login",
+        "查询小区最大登录限制",
+        "登录"
+      ],
+      "source": "文档来源：Site Max Login加大小区登录限制",
+      "type": "text"
+    }
+  ],
+  "raw_content": {
+    "title": "Site Max Login加大小区登录限制",
+    "source_file": "待处理知识库\\SRMS Support\\Site Max Login加大小区登录限制.docx",
+    "type": "word",
+    "sections": [
+      {
+        "heading": "",
+        "content": "查询小区最大登录限制，按照需要进行更新\nselect SITE_MAX_LOGON from proj where projid = '50397'\nupdate proj set SITE_MAX_LOGON = 5 where projid = '50397'\n查询正在登录的用户列表\n-- current login user\nselect * from MRI_Current_Sessions(nolock) where LOGOUT_TIME IS NULL order by uSERID asc,start_time asc\n超出150最大限制清理\nupdate MRI_Current_Sessions set LOGOUT_TIME = getdate() where LOGOUT_TIME IS NULL and LOGOUT_REASON is not null\n",
+        "tables": [],
+        "images": []
+      }
+    ],
+    "images": []
+  }
+}

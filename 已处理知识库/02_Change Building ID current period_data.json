@@ -1,0 +1,31 @@
+{
+  "original_file": "待处理知识库\\SRMS Support\\Change Building ID current period.docx",
+  "qa_pairs": [
+    {
+      "question": "相关问题",
+      "answer": "文档来源：Change Building ID current period\n\n查询PERIOD详情\nselect * from cmpd where bldgid = 'XXXXX'\n根据BLDGID更新PERIOD\nupdate cmpd set period = '202410' where bldgid = 'XXXXX'",
+      "keywords": [
+        "更新",
+        "查询",
+        "根据",
+        "详情"
+      ],
+      "source": "文档来源：Change Building ID current period",
+      "type": "text"
+    }
+  ],
+  "raw_content": {
+    "title": "Change Building ID current period",
+    "source_file": "待处理知识库\\SRMS Support\\Change Building ID current period.docx",
+    "type": "word",
+    "sections": [
+      {
+        "heading": "",
+        "content": "查询PERIOD详情\nselect * from cmpd where bldgid = 'XXXXX'\n根据BLDGID更新PERIOD\nupdate cmpd set period = '202410' where bldgid = 'XXXXX'\n",
+        "tables": [],
+        "images": []
+      }
+    ],
+    "images": []
+  }
+}
