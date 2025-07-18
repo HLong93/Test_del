@@ -3,7 +3,7 @@ app:
   icon: 🚀
   icon_background: '#F3E5F5'
   mode: advanced-chat
-  name: 高级版企业级可扩展问答系统01
+  name: 高级版企业级可扩展问答系统
   use_icon_as_answer_icon: false
 kind: app
 version: 0.1.5
